@@ -1,0 +1,83 @@
+.progress {
+  display: flex;
+  justify-content: center;
+  margin: 10rem auto;
+  width: 50%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  width: 85%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon > div {
+  border-radius: 50%;
+  padding: 15px;
+  width: 62px;
+  height: 62px;
+}
+
+.icon i {
+  font-size: 32px;
+}
+
+.orange-light {
+  background-color: #ffb3807e;
+}
+
+.orange-dark {
+  background-color: #80330079;
+}
+
+.purple-light {
+  background-color: #ff80ff79;
+}
+
+.purple-dark {
+  background-color: #80008077;
+}
+
+.yellow-light {
+  background-color: #ffff8079;
+}
+
+.yellow-dark {
+  background-color: #80800075;
+}
+
+.green-light {
+  background-color: #80ff807e;
+}
+
+.green-dark {
+  background-color: #00800077;
+}
+
+.content {
+  align-items: center;
+  display: grid;
+}
+
+.content h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 120%;
+}
+
+.content p {
+  font-size: 1rem;
+}
+
+.view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}

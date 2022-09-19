@@ -1,0 +1,112 @@
+.cards {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  width: 90%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coverContainer {
+  width: 100%;
+  height: 350px;
+  background: linear-gradient(to top, #c037ff31, #ff813731),
+    url("../../assets/imgs/blockchain.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+  -webkit-transition: filter 1s ease;
+  -moz-transition: filter 1s ease;
+  -o-transition: filter 1s ease;
+  transition: filter 1s ease;
+}
+
+.coverContainer:hover {
+  filter: saturate(130%);
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.modalFooter > div {
+  margin: 5px;
+}
+
+.extensionContainer {
+  display: flex;
+  width: 540px;
+}
+
+.extensionContainer button {
+  display: flex;
+  width: 100%;
+}
+
+.extensionContainer button > span {
+  font-size: 18px;
+}
+
+.metamask {
+  margin-right: 15px;
+  border: 0.5px solid #303030;
+  align-items: center;
+  justify-content: center;
+  font-size: 18;
+  font-weight: 600;
+  color: #ffffff;
+  width: 200px;
+  height: 50px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 1s ease;
+  box-shadow: 1px 1px 1rem #ff8d4c, -1px -1px 1rem #2b2b2b;
+}
+
+.twitch {
+  border: 0.5px solid #303030;
+  align-items: center;
+  justify-content: center;
+  font-size: 18;
+  font-weight: 600;
+  color: #ffffff;
+  width: 200px;
+  height: 50px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 1s ease;
+  box-shadow: 1px 1px 1rem #c751fd, -1px -1px 1rem #2b2b2b;
+}
+
+.orange {
+  background-color: #ff8d4c;
+}
+
+.purple {
+  background-color: #c751fd;
+}
+
+.orange:hover {
+  background-color: #ff7322;
+  box-shadow: 1px 1px 1rem #2b2b2b, -1px -1px 1rem #ff7322;
+}
+
+.purple:hover {
+  background-color: #b923ff;
+  box-shadow: 1px 1px 1rem #2b2b2b, -1px -1px 1rem #b923ff;
+}
+
+.orange:active {
+  box-shadow: inset 0.5px 0.5px 1rem #2b2b2b, -0.5px -0.5px 1rem #ff7322;
+}
+
+.purple:active {
+  box-shadow: inset 0.5px 0.5px 1rem #2b2b2b, -0.5px -0.5px 1rem #b923ff;
+}
