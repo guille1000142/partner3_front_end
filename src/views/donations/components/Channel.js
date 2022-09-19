@@ -1,14 +1,18 @@
 import { useParams } from "react-router-dom";
-import { Text, useTheme, Loading } from "@nextui-org/react";
+import { Text, useTheme, Loading, Link } from "@nextui-org/react";
 import styles from "../donations.module.css";
 import Donation from "./Donation";
 import useChannel from "../../../hooks/useChannel";
+import useUsers from "../../../hooks/socket/useUsers";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Channel() {
+  const [profile, setProfile] = useState(false);
   const { isDark } = useTheme();
   const { id } = useParams();
   const { channel } = useChannel(id);
-  console.log({ id, channel });
+  const { users } = useUsers();
 
   // useEffect(() => {
   //   if (donations.length > 0) {
@@ -23,6 +27,13 @@ export default function Channel() {
   //     }
   //   }
   // }, [urlParams]);
+
+  useEffect(() => {
+    if (users) {
+      const userProfile = users.find((user) => user.id === id);
+      setProfile(userProfile);
+    }
+  }, [users]);
 
   return channel ? (
     <>
@@ -39,7 +50,33 @@ export default function Channel() {
         </Text>
       </div>
       <div className={styles.search}>
-        <Donation name={channel.broadcaster_name} />
+        {profile ? (
+          profile.wallet ? (
+            <>
+              <Text h5>User is registered in partner3!</Text>
+              <Text h6>Wallet: {profile.wallet}</Text>
+            </>
+          ) : (
+            <>
+              <Text h5>
+                User is registered in partner3, but no wallet setted!
+              </Text>
+              <Text h6>
+                Tokens will save in our reserves meantime. &nbsp;
+                <a>More info here</a>
+              </Text>
+            </>
+          )
+        ) : (
+          <>
+            <Text h5>User is not registered in partner3!</Text>
+            <Text h6>
+              Tokens will save in our reserves meantime. &nbsp;
+              <a>More info here</a>
+            </Text>
+          </>
+        )}
+        <Donation profile={profile} name={channel.broadcaster_name} />
       </div>
     </>
   ) : (

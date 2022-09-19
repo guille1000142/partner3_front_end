@@ -1,46 +1,11 @@
-import {
-  Text,
-  Grid,
-  Progress,
-  Button,
-  Spacer,
-  Card,
-  Loading,
-  useTheme,
-} from "@nextui-org/react";
+import { Text, Button, Loading } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import useDonations from "../../hooks/socket/useDonations";
+import useUsers from "../../hooks/socket/useUsers";
 import styles from "./dashboard.module.css";
-import MaticDark from "../../assets/imgs/polygon_dark.png";
-// import BnbDark from "../../assets/imgs/bnb_dark.png";
-import MaticLight from "../../assets/imgs/polygon_light.png";
-// import BnbLight from "../../assets/imgs/bnb_light.png";
 import useWeb3 from "../../hooks/useWeb3";
-
-const ModalCards = ({ icon, color, value, text }) => {
-  return (
-    <Grid>
-      <Card css={{ minWidth: "300px", minHeight: "100px" }}>
-        <Card.Body
-          css={{
-            alignItems: "center",
-            display: "grid",
-            gap: "1rem",
-            gridTemplateColumns: "auto 1fr",
-          }}
-        >
-          <div className={styles.icon}>
-            <div className={styles[color]}>{icon}</div>
-          </div>
-          <div className={styles.content}>
-            <h2>{value}</h2>
-            <p>{text}</p>
-          </div>
-        </Card.Body>
-      </Card>
-    </Grid>
-  );
-};
+import Register from "./components/Register";
+import Stats from "./components/Stats";
 
 const truncateDecimals = function (number, digits) {
   var multiplier = Math.pow(10, digits),
@@ -54,10 +19,17 @@ export default function Dashboard() {
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [donationData, setDonationData] = useState(false);
   const [view, setView] = useState(false);
+  const [profile, setProfile] = useState(false);
   const { donations } = useDonations();
+  const { users } = useUsers();
   const { maticPrice } = useWeb3();
-  const { isDark } = useTheme();
-  console.log({ donations, user, donationData, maticPrice });
+
+  useEffect(() => {
+    if (users && user && !profile) {
+      const userProfile = users.find((channel) => channel.id === user.id);
+      setProfile(userProfile);
+    }
+  }, [users, user, profile]);
 
   useEffect(() => {
     if (donations && user && !donationData && maticPrice) {
@@ -113,10 +85,8 @@ export default function Dashboard() {
     }
   }, [donations, user, donationData, maticPrice]);
 
-  const maxValue = 200;
-
   return user ? (
-    donationData ? (
+    users && profile && donationData ? (
       <>
         <div className="title">
           <Text
@@ -130,7 +100,6 @@ export default function Dashboard() {
             DASHBOARD
           </Text>
         </div>
-
         <div className={styles.view}>
           <Button.Group color="secondary">
             <Button
@@ -159,81 +128,13 @@ export default function Dashboard() {
             </Button>
           </Button.Group>
         </div>
-
-        <div className={styles.cards}>
-          <Grid.Container gap={2} justify="space-evenly">
-            <ModalCards
-              color={isDark ? "orange-light" : "orange-light"}
-              icon={<i className="fa-solid fa-circle-dollar-to-slot"></i>}
-              value={
-                view
-                  ? donationData.userData.totalDonations
-                  : donationData.channelData.totalDonations
-              }
-              text="Donations"
-            />
-            <ModalCards
-              color={isDark ? "purple-light" : "purple-light"}
-              icon={
-                <img
-                  width={32}
-                  height={32}
-                  src={isDark ? MaticLight : MaticDark}
-                  alt="Matic"
-                />
-              }
-              value={
-                view
-                  ? donationData.userData.totalTokens
-                  : donationData.channelData.totalTokens
-              }
-              text="MATIC Tokens"
-            />
-            <ModalCards
-              color={isDark ? "green-light" : "green-light"}
-              icon={<i className="fa-solid fa-sack-dollar"></i>}
-              value={`$${
-                view
-                  ? donationData.userData.totalEarnings
-                  : donationData.channelData.totalEarnings
-              }`}
-              text="Earnings"
-            />
-          </Grid.Container>
-        </div>
-
-        <div className={styles.progress}>
-          <Text h3>Donations</Text>
-          <Text h5>{`${
-            view
-              ? donationData.userData.totalDonations
-              : donationData.channelData.totalDonations
-          } / ${maxValue}`}</Text>
-          <Progress
-            size="lg"
-            value={
-              view
-                ? donationData.userData.totalDonations
-                : donationData.channelData.totalDonations
-            }
-            max={maxValue}
-            color="secondary"
-            striped
-          />
-          <Spacer />
-          <Button
-            size="md"
-            color="secondary"
-            shadow
-            disabled={
-              view
-                ? donationData.userData.totalDonations < maxValue
-                : donationData.channelData.totalDonations < maxValue
-            }
-          >
-            Unlock Staking
-          </Button>
-        </div>
+        {view ? (
+          <Stats view={view} donationData={donationData.userData} />
+        ) : profile.wallet ? (
+          <Stats view={view} donationData={donationData.channelData} />
+        ) : (
+          <Register user={user} setProfile={setProfile} />
+        )}
       </>
     ) : (
       <div className="loading">

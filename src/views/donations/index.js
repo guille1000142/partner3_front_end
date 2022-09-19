@@ -23,7 +23,6 @@ const ModalCards = ({ id, photo, name, title }) => {
         onPress={() => navigate(`/donations/${id}`)}
         isPressable
         isHoverable
-        variant="bordered"
       >
         <Card.Body
           css={{

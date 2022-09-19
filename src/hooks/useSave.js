@@ -1,4 +1,4 @@
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firestore/client";
 
 export default function useSave() {
@@ -16,5 +16,12 @@ export default function useSave() {
     window.sessionStorage.setItem("user", JSON.stringify(user));
   };
 
-  return { saveUser };
+  const saveWallet = async (wallet, user) => {
+    const data = {
+      wallet,
+    };
+    await updateDoc(doc(db, "users", user.id), data);
+  };
+
+  return { saveUser, saveWallet };
 }

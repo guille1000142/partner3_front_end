@@ -18,7 +18,8 @@ import useWeb3 from "../../../hooks/useWeb3";
 import useDonation from "../../../hooks/useDonation";
 import styles from "../donations.module.css";
 
-export default function Donation({ name }) {
+export default function Donation({ profile, name }) {
+  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [token, setToken] = useState(new Set(["MATIC"]));
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
@@ -53,6 +54,16 @@ export default function Donation({ name }) {
     if (message.length < 50) {
       setMessage(message + emoticon);
     }
+  };
+
+  const handleLogin = () => {
+    const clientId = process.env.REACT_APP_TWITCH_CLIENT_ID;
+    const redirectUri = "http://localhost:3000";
+    const responseType = "token";
+    const scope = window.encodeURI(
+      "channel:read:subscriptions user:read:email"
+    );
+    window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
   };
 
   return (
@@ -179,38 +190,54 @@ export default function Donation({ name }) {
 
         <Spacer />
         <Spacer />
-
-        <Button
-          onPress={() =>
-            !account
-              ? connectWallet()
-              : sendTokens({
-                  web3,
-                  account,
-                  token: token.entries().next().value[0],
-                  network,
-                  changeNetwork,
-                  message,
-                  setMessage,
-                  amount,
-                  setAmount,
-                  balance,
-                  readBalance,
-                })
-          }
-          size="md"
-          color="secondary"
-          css={{ fontSize: "20px" }}
-          shadow
-        >
-          {!account ? (
-            "Connect"
-          ) : (
-            <>
-              <i className="fa-solid fa-comments-dollar"></i> &nbsp; Donate
-            </>
-          )}
-        </Button>
+        {user ? (
+          <Button
+            onPress={() =>
+              !account
+                ? connectWallet()
+                : sendTokens({
+                    web3,
+                    account,
+                    token: token.entries().next().value[0],
+                    network,
+                    changeNetwork,
+                    message,
+                    setMessage,
+                    amount,
+                    setAmount,
+                    balance,
+                    readBalance,
+                  })
+            }
+            size="md"
+            color="secondary"
+            css={{ fontSize: "20px" }}
+            shadow
+          >
+            {!account ? (
+              <>
+                <i class="fa-solid fa-wallet"></i> &nbsp; Connect
+              </>
+            ) : (
+              <>
+                <i className="fa-solid fa-comments-dollar"></i> &nbsp; Donate
+              </>
+            )}
+          </Button>
+        ) : (
+          <Button
+            onPress={handleLogin}
+            size="md"
+            color="secondary"
+            css={{ fontSize: "20px" }}
+            shadow
+          >
+            <div className="login">
+              <i className="fa-brands fa-twitch"></i>
+              <span>Login</span>
+            </div>
+          </Button>
+        )}
       </Card.Body>
     </Card>
   );

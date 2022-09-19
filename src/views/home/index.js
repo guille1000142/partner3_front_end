@@ -1,11 +1,12 @@
 import { Text, Col, Card, Spacer, Grid, Loading } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 import useDonations from "../../hooks/socket/useDonations";
 import useTops from "../../hooks/useTops";
 import styles from "./home.module.css";
 import Live from "./components/live";
 import TopAmount from "./components/topAmount";
+import Promoted from "./components/Promoted";
 import TopDonation from "./components/topDonation";
-import { useNavigate } from "react-router-dom";
 import useLive from "../../hooks/useLive";
 
 export default function Home() {
@@ -13,6 +14,16 @@ export default function Home() {
   const { tops } = useTops({ donations });
   const { live } = useLive({ donations });
   let navigate = useNavigate();
+
+  const data = [
+    {
+      id: 0,
+      photo:
+        "https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png",
+      channel: "S7siete7",
+      language: "ES",
+    },
+  ];
 
   return (
     <>
@@ -76,12 +87,16 @@ export default function Home() {
         </Card>
         <Spacer />
         {tops && live ? (
-          <Grid.Container gap={6} justify="space-evenly">
+          <Grid.Container
+            css={{ marginTop: "20px" }}
+            gap={6}
+            justify="space-evenly"
+          >
             <Grid>
               <Text css={{ textAlign: "center" }} h3>
-                <i class="fa-solid fa-fire"></i> &nbsp; Promoted Channels
+                <i class="fa-solid fa-fire"></i> &nbsp;Promoted Channels
               </Text>
-              <TopAmount amount={tops.amount} />
+              <Promoted data={data} />
             </Grid>
             <Grid>
               <Text css={{ textAlign: "center" }} h3>

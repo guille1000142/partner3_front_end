@@ -32,6 +32,11 @@ export default function useDonation() {
     balance,
     readBalance,
   }) => {
+    if (window.sessionStorage.getItem("user") === null) {
+      toast.error("Login with twitch");
+      return false;
+    }
+
     const minimumAmount = token === "MATIC" ? 1 : 0.01;
 
     if (amount < minimumAmount) {
