@@ -16,5 +16,6 @@ export default function useUsers() {
       socket && socket.off("receive_donations", listener);
     };
   }, [socket]);
+
   return { donations };
 }

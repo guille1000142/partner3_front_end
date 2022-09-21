@@ -11,7 +11,7 @@ export default function useChannel(id) {
       fetch(`https://api.twitch.tv/helix/channels?broadcaster_id=${id}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${bot[0].access_token}`,
+          Authorization: `Bearer ${bot[1].access_token}`,
           "Client-Id": process.env.REACT_APP_TWITCH_CLIENT_ID,
         },
       })

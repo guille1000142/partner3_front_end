@@ -1,6 +1,6 @@
 import { Text, Table, Col, Row, User } from "@nextui-org/react";
 
-export default function TopDonation({ donation }) {
+export default function TopDonation({ isDark, donation }) {
   const column = [
     { name: "Nº", uid: "index" },
     { name: "User", uid: "user" },
@@ -16,7 +16,6 @@ export default function TopDonation({ donation }) {
           <Col>
             <Row>
               <User
-                zoomed
                 bordered
                 size="sm"
                 color="secondary"
@@ -68,7 +67,12 @@ export default function TopDonation({ donation }) {
 
   return (
     <Table
-      css={{ width: "280px", height: "612px" }}
+      css={{
+        width: "300px",
+        bg: isDark
+          ? "linear-gradient(300deg, rgba(190,190,190,1) 0%, rgba(235,235,235,1) 100%)"
+          : "#ffffff",
+      }}
       selectionMode="none"
       color="secondary"
     >
@@ -88,7 +92,6 @@ export default function TopDonation({ donation }) {
           </Table.Row>
         )}
       </Table.Body>
-      <Table.Pagination shadow noMargin align="center" rowsPerPage={10} />
     </Table>
   );
 }

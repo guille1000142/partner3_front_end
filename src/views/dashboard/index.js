@@ -91,7 +91,7 @@ export default function Dashboard() {
         <div className="title">
           <Text
             css={{
-              textGradient: "45deg, $yellow600 -20%, $purple600 100%",
+              textGradient: "45deg, $purple600 0%, $yellow600 100%",
             }}
             weight="bold"
             h1

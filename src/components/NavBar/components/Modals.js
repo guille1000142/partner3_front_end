@@ -6,13 +6,19 @@ import {
   Table,
   useTheme,
   Switch,
+  Spacer,
 } from "@nextui-org/react";
-import { useTheme as useNextTheme } from "next-themes";
 
 export function Profile({ user, modal, setModal }) {
+  const { isDark } = useTheme();
   const date = new Date(user.created_at).toLocaleDateString();
   return (
     <Modal
+      css={{
+        bg: isDark
+          ? "linear-gradient(300deg, rgba(190,190,190,1) 0%, rgba(235,235,235,1) 100%)"
+          : "#ffffff",
+      }}
       width="650px"
       closeButton
       aria-labelledby="modal-title"
@@ -26,14 +32,16 @@ export function Profile({ user, modal, setModal }) {
       </Modal.Header>
       <Modal.Body>
         <Grid.Container gap={1} justify="center">
-          <Avatar
-            bordered
-            as="button"
-            color="secondary"
-            size="lg"
-            css={{ width: "70px", height: "70px" }}
-            src={user.profile_image_url}
-          />
+          <Grid>
+            <Avatar
+              bordered
+              as="button"
+              color="secondary"
+              size="lg"
+              css={{ width: "90px", height: "90px" }}
+              src={user.profile_image_url}
+            />
+          </Grid>
         </Grid.Container>
         <Table
           shadow={false}

@@ -1,4 +1,4 @@
-import { setDoc, doc, updateDoc } from "firebase/firestore";
+import { setDoc, doc, updateDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../firestore/client";
 
 export default function useSave() {
@@ -23,5 +23,20 @@ export default function useSave() {
     await updateDoc(doc(db, "users", user.id), data);
   };
 
-  return { saveUser, saveWallet };
+  const saveDonation = async ({ user, channel, amount, token }) => {
+    console.log("saving...");
+    const data = {
+      name: user.display_name.toLowerCase(),
+      id: user.id,
+      photo: user.profile_image_url,
+      amount,
+      token,
+      cid: channel.broadcaster_id,
+      channel: channel.broadcaster_name,
+      time: Math.round(new Date().getTime() / 1000),
+    };
+    await addDoc(collection(db, "donations"), data);
+  };
+
+  return { saveUser, saveWallet, saveDonation };
 }

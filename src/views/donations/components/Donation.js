@@ -5,9 +5,7 @@ import {
   Input,
   Text,
   Button,
-  Dropdown,
   Spacer,
-  Textarea,
   Tooltip,
   useTheme,
 } from "@nextui-org/react";
@@ -17,12 +15,15 @@ import { useNavigate } from "react-router-dom";
 import useWeb3 from "../../../hooks/useWeb3";
 import useDonation from "../../../hooks/useDonation";
 import styles from "../donations.module.css";
+import MaticLight from "../../../assets/imgs/polygon_light.png";
+import MaticDark from "../../../assets/imgs/polygon_dark.png";
 
-export default function Donation({ profile, name }) {
+export default function Donation({ channel, profile }) {
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [token, setToken] = useState(new Set(["MATIC"]));
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
+  const [chat, setChat] = useState(false);
   const [emoji, setEmoji] = useState(false);
   const { isDark } = useTheme();
   const {
@@ -32,11 +33,13 @@ export default function Donation({ profile, name }) {
     account,
     network,
     balance,
+    contract,
     web3,
   } = useWeb3();
   const { sendTokens } = useDonation();
-
   const navigate = useNavigate();
+
+  console.log(chat);
 
   const handleAmount = (e) => {
     e.preventDefault();
@@ -67,50 +70,57 @@ export default function Donation({ profile, name }) {
   };
 
   return (
-    <Card css={{ width: "300px", margin: "0 auto" }}>
-      <Card.Header>
-        <Grid.Container gap={0} justify="space-between">
-          <Grid>
-            <Button
-              onPress={() => navigate("/donations")}
-              solid
-              size="xs"
-              color="secondary"
-              css={{ padding: "12px 0px 12px 0px", fontSize: "16px" }}
-            >
-              <i className="fa-solid fa-arrow-left"></i>
-            </Button>
-          </Grid>
-          <Grid>
-            <Tooltip
-              // content={
-              //   (network === "0x89" && "MATIC Polygon Network") ||
-              //   (network === "0x38" && "BNB BSC Network")
-              // }
-              content={network === "0x89" ? "MATIC" : "INVALID"}
-              trigger="hover"
-              color="secondary"
-              placement="bottom"
-            >
+    <div>
+      <Card
+        css={{
+          maxWidth: "350px",
+          margin: "0 auto",
+          bg: isDark
+            ? "linear-gradient(300deg, rgba(190,190,190,1) 0%, rgba(235,235,235,1) 100%)"
+            : "#ffffff",
+        }}
+      >
+        <Card.Header>
+          <Grid.Container gap={0} justify="space-between">
+            <Grid>
               <Button
+                onPress={() => navigate("/donations")}
                 flat
                 size="xs"
                 color="secondary"
                 css={{ padding: "12px 0px 12px 0px", fontSize: "16px" }}
               >
-                {balance}
+                <i className="fa-solid fa-arrow-left"></i>
               </Button>
-            </Tooltip>
-          </Grid>
-        </Grid.Container>
-      </Card.Header>
+            </Grid>
+            <Grid>
+              <Tooltip
+                content={network === "0x89" ? "MATIC" : "INVALID"}
+                trigger="hover"
+                color="secondary"
+                placement="bottom"
+              >
+                <Button
+                  flat
+                  size="xs"
+                  color="secondary"
+                  css={{ padding: "12px 0px 12px 0px", fontSize: "16px" }}
+                >
+                  <span className="bold">{balance}</span>
+                </Button>
+              </Tooltip>
+            </Grid>
+          </Grid.Container>
+        </Card.Header>
 
-      <Card.Divider />
+        <Card.Divider css={{ bg: isDark ? "#383838" : "silver" }} />
 
-      <Card.Body css={{ py: "$15", display: "flex", alignItems: "center" }}>
-        <Text h3>{name}</Text>
-        <Spacer />
-        {/* <Dropdown>
+        <Card.Body css={{ py: "$10" }}>
+          <Text h3 css={{ textAlign: "center" }}>
+            {channel.broadcaster_name}
+          </Text>
+          <Spacer />
+          {/* <Dropdown>
           <Dropdown.Button
             css={{ margin: "10px" }}
             light
@@ -132,113 +142,148 @@ export default function Donation({ profile, name }) {
           </Dropdown.Menu>
         </Dropdown> */}
 
-        <Input
-          size="lg"
-          type="number"
-          onChange={(e) => handleAmount(e)}
-          value={amount}
-          min={0.0}
-          step={0.1}
-          rounded
-          bordered
-          label={`${token.entries().next().value[0]} Amount`}
-          placeholder="Introduce amount"
-          color="secondary"
-          css={{ marginBottom: "10px" }}
-        />
-
-        {emoji && (
-          <div className={styles.emoji}>
-            <Picker
-              onEmojiClick={handleEmoji}
-              pickerStyle={{
-                height: "210px",
-                border: "none",
-                boxShadow: "none",
-              }}
-              disableSearchBar={true}
-              disableAutoFocus={true}
-              // preload={true}
-            />
-          </div>
-        )}
-
-        <Spacer />
-
-        <Button
-          onPress={() => setEmoji(!emoji)}
-          light
-          size="xs"
-          color="secondary"
-          css={{ padding: "20px 20px", fontSize: "20px" }}
-        >
-          <i className="fas fa-smile"></i>
-        </Button>
-
-        <Textarea
-          spellCheck={false}
-          onChange={(event) => handleMessage(event)}
-          value={message}
-          size="lg"
-          bordered
-          maxRows={3}
-          color="secondary"
-          maxLength={50}
-          label={"Message (Optional) "}
-          placeholder="Type something..."
-        />
-
-        <Spacer />
-        <Spacer />
-        {user ? (
-          <Button
-            onPress={() =>
-              !account
-                ? connectWallet()
-                : sendTokens({
-                    web3,
-                    account,
-                    token: token.entries().next().value[0],
-                    network,
-                    changeNetwork,
-                    message,
-                    setMessage,
-                    amount,
-                    setAmount,
-                    balance,
-                    readBalance,
-                  })
+          <Input
+            size="lg"
+            type="number"
+            onChange={(e) => handleAmount(e)}
+            value={amount}
+            min={0.0}
+            step={0.1}
+            placeholder={`${token.entries().next().value[0]} Amount`}
+            status="secondary"
+            contentLeft={
+              <div className={styles.inputIcon}>
+                <img src={isDark ? MaticLight : MaticDark} alt="polygon" />
+              </div>
             }
-            size="md"
-            color="secondary"
-            css={{ fontSize: "20px" }}
-            shadow
-          >
-            {!account ? (
-              <>
-                <i class="fa-solid fa-wallet"></i> &nbsp; Connect
-              </>
-            ) : (
-              <>
-                <i className="fa-solid fa-comments-dollar"></i> &nbsp; Donate
-              </>
-            )}
-          </Button>
-        ) : (
-          <Button
-            onPress={handleLogin}
-            size="md"
-            color="secondary"
-            css={{ fontSize: "20px" }}
-            shadow
-          >
-            <div className="login">
-              <i className="fa-brands fa-twitch"></i>
-              <span>Login</span>
+            contentLeftStyling={false}
+          />
+
+          {emoji && (
+            <div className={styles.emoji}>
+              <Picker
+                onEmojiClick={handleEmoji}
+                pickerStyle={{
+                  height: "160px",
+                  border: "none",
+                  boxShadow: "none",
+                }}
+                disableSearchBar={true}
+                disableAutoFocus={true}
+                // preload={true}
+              />
             </div>
-          </Button>
-        )}
-      </Card.Body>
-    </Card>
+          )}
+
+          <Spacer />
+
+          {/* <Button
+            onPress={() => setEmoji(!emoji)}
+            light
+            size="xs"
+            color="secondary"
+            css={{ padding: "20px 20px", fontSize: "20px" }}
+          >
+            <i className="fas fa-smile"></i>
+          </Button> */}
+
+          {/* <Textarea
+            status="secondary"
+            spellCheck={false}
+            onChange={(event) => handleMessage(event)}
+            value={message}
+            size="md"
+            bordered
+            maxRows={3}
+            color="secondary"
+            maxLength={50}
+            label={"Message (Optional) "}
+            placeholder="Type something..."
+          /> */}
+
+          <Input
+            size="lg"
+            type="text"
+            onChange={(event) => handleMessage(event)}
+            value={message}
+            spellCheck={false}
+            maxLength={50}
+            placeholder="Type something..."
+            status="secondary"
+            contentLeft={
+              <div
+                className={styles.inputIcon}
+                onClick={() => setEmoji(!emoji)}
+              >
+                <i
+                  className={
+                    isDark
+                      ? "fa-solid fa-face-smile light"
+                      : "fa-solid fa-face-smile dark"
+                  }
+                ></i>
+              </div>
+            }
+            contentLeftStyling={false}
+          />
+
+          <Spacer />
+          {user ? (
+            <Button
+              onPress={() =>
+                !account
+                  ? connectWallet()
+                  : sendTokens({
+                      web3,
+                      contract,
+                      account,
+                      token: token.entries().next().value[0],
+                      network,
+                      changeNetwork,
+                      message,
+                      setMessage,
+                      amount,
+                      setAmount,
+                      balance,
+                      readBalance,
+                      channel,
+                      profile,
+                      chat,
+                    })
+              }
+              size="md"
+              color={!account ? "warning" : "success"}
+              css={{ fontSize: "18px" }}
+            >
+              {!account ? (
+                <>
+                  <i class="fa-solid fa-wallet"></i>&nbsp;
+                  <span className="bold"> Connect Wallet</span>
+                </>
+              ) : (
+                <>
+                  <i className="fa-solid fa-comments-dollar"></i>&nbsp;
+                  <span className="bold"> Send Message</span>
+                </>
+              )}
+            </Button>
+          ) : (
+            <Button
+              onPress={handleLogin}
+              size="md"
+              color="secondary"
+              css={{ fontSize: "20px" }}
+              shadow
+            >
+              <div className="login">
+                <i className="fa-brands fa-twitch"></i>
+                <span>Login</span>
+              </div>
+            </Button>
+          )}
+        </Card.Body>
+      </Card>
+      <Spacer />
+    </div>
   );
 }

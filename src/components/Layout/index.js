@@ -16,7 +16,10 @@ const lightTheme = createTheme({
 const darkTheme = createTheme({
   type: "dark",
   theme: {
-    colors: {},
+    colors: {
+      background: "#272B36",
+      text: "#000000",
+    },
   },
 });
 

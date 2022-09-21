@@ -1,4 +1,12 @@
-import { Text, Col, Card, Spacer, Grid, Loading } from "@nextui-org/react";
+import {
+  Text,
+  Col,
+  Card,
+  Spacer,
+  Grid,
+  Loading,
+  useTheme,
+} from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import useDonations from "../../hooks/socket/useDonations";
 import useTops from "../../hooks/useTops";
@@ -8,29 +16,26 @@ import TopAmount from "./components/topAmount";
 import Promoted from "./components/Promoted";
 import TopDonation from "./components/topDonation";
 import useLive from "../../hooks/useLive";
+import usePromos from "../../hooks/usePromos";
+import usePromotions from "../../hooks/socket/usePromotions";
 
 export default function Home() {
   const { donations } = useDonations();
+  const { promotions } = usePromotions();
   const { tops } = useTops({ donations });
   const { live } = useLive({ donations });
-  let navigate = useNavigate();
+  const { promos } = usePromos({ promotions });
+  const { isDark } = useTheme();
 
-  const data = [
-    {
-      id: 0,
-      photo:
-        "https://static-cdn.jtvnw.net/user-default-pictures-uv/cdd517fe-def4-11e9-948e-784f43822e80-profile_image-300x300.png",
-      channel: "S7siete7",
-      language: "ES",
-    },
-  ];
+  let navigate = useNavigate();
+  console.log({ donations, promotions });
 
   return (
     <>
       <div className="title">
         <Text
           css={{
-            textGradient: "45deg, $yellow600 -20%, $purple600 100%",
+            textGradient: "45deg, $purple600 0%, $yellow600 100%",
           }}
           weight="bold"
           h1
@@ -41,6 +46,9 @@ export default function Home() {
       </div>
 
       <div className={styles.cards}>
+        {/* <a href="https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=9mco1ahj5d62s8l1qtl7fhctsmr446&redirect_uri=http://localhost:3000&scope=chat:edit+chat:read">
+          Connect Bot
+        </a> */}
         <Card>
           <div className={styles.coverContainer}></div>
           <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
@@ -53,13 +61,17 @@ export default function Home() {
               </Text>
             </Col>
           </Card.Header>
-          <Card.Footer css={{ bg: "#2b2b2b" }}>
+          <Card.Footer
+            css={{
+              bg: isDark ? "#bebebe" : "#FFFFFF",
+            }}
+          >
             <div className={styles.modalFooter}>
               <div>
-                <Text color="#d1d1d1" size={15}>
+                <Text color="#000000" size={15}>
                   Free, fast and secure!
                 </Text>
-                <Text color="#d1d1d1" size={15}>
+                <Text color="#000000" size={15}>
                   Metamask & Partner3.
                 </Text>
               </div>
@@ -71,13 +83,21 @@ export default function Home() {
                       "_blank"
                     )
                   }
-                  className={`${styles.metamask} ${styles.orange}`}
+                  className={
+                    isDark
+                      ? `${styles.metamaskD} ${styles.orangeD}`
+                      : `${styles.metamaskL} ${styles.orangeL}`
+                  }
                 >
                   <span>Get Metamask</span>
                 </button>
                 <button
                   onClick={() => navigate("/donations")}
-                  className={`${styles.twitch} ${styles.purple}`}
+                  className={
+                    isDark
+                      ? `${styles.twitchD} ${styles.purpleD}`
+                      : `${styles.twitchL} ${styles.purpleL}`
+                  }
                 >
                   <span>Donate Now</span>
                 </button>
@@ -86,35 +106,59 @@ export default function Home() {
           </Card.Footer>
         </Card>
         <Spacer />
-        {tops && live ? (
+        {tops && live && promos ? (
           <Grid.Container
             css={{ marginTop: "20px" }}
-            gap={6}
+            gap={4}
             justify="space-evenly"
           >
             <Grid>
-              <Text css={{ textAlign: "center" }} h3>
+              <Text
+                css={{
+                  textAlign: "center",
+                  color: isDark ? "#ffffff" : "#000000",
+                }}
+                h3
+              >
                 <i class="fa-solid fa-fire"></i> &nbsp;Promoted Channels
               </Text>
-              <Promoted data={data} />
+              <Promoted promos={promos} isDark={isDark} />
             </Grid>
             <Grid>
-              <Text css={{ textAlign: "center" }} h3>
+              <Text
+                css={{
+                  textAlign: "center",
+                  color: isDark ? "#ffffff" : "#000000",
+                }}
+                h3
+              >
                 <i class="fa-solid fa-globe"></i> &nbsp;Live Donations
               </Text>
-              <Live live={live} />
+              <Live live={live} isDark={isDark} />
             </Grid>
             <Grid>
-              <Text css={{ textAlign: "center" }} h3>
+              <Text
+                css={{
+                  textAlign: "center",
+                  color: isDark ? "#ffffff" : "#000000",
+                }}
+                h3
+              >
                 <i class="fa-solid fa-trophy"></i> &nbsp;Top Amount
               </Text>
-              <TopAmount amount={tops.amount} />
+              <TopAmount amount={tops.amount} isDark={isDark} />
             </Grid>
             <Grid>
-              <Text css={{ textAlign: "center" }} h3>
+              <Text
+                css={{
+                  textAlign: "center",
+                  color: isDark ? "#ffffff" : "#000000",
+                }}
+                h3
+              >
                 <i class="fa-solid fa-trophy"></i> &nbsp;Top Donations
               </Text>
-              <TopDonation donation={tops.donation} />
+              <TopDonation donation={tops.donation} isDark={isDark} />
             </Grid>
           </Grid.Container>
         ) : (

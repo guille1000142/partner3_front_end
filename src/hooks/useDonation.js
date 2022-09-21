@@ -1,12 +1,13 @@
-import { useContext } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { Context } from "../context/Context";
 import useChat from "./useChat";
 import useSave from "./useSave";
 import useGas from "./useGas";
 
 export default function useDonation() {
-  const { user, channel } = useContext(Context);
+  const [user, setUser] = useState(
+    JSON.parse(window.sessionStorage.getItem("user"))
+  );
   const { writeToChat } = useChat();
   const { saveDonation } = useSave();
   const { getPolygonGas } = useGas();
@@ -21,8 +22,10 @@ export default function useDonation() {
 
   const sendTokens = async ({
     web3,
+    contract,
     account,
     token,
+    channel,
     network,
     changeNetwork,
     message,
@@ -31,6 +34,7 @@ export default function useDonation() {
     setAmount,
     balance,
     readBalance,
+    profile,
   }) => {
     if (window.sessionStorage.getItem("user") === null) {
       toast.error("Login with twitch");
@@ -44,42 +48,58 @@ export default function useDonation() {
       return false;
     }
 
-    const chainId =
-      (token === "MATIC" && "0x89") || (token === "BNB" && "0x38");
+    // const chainId =
+    //   (token === "MATIC" && "0x89") || (token === "BNB" && "0x38");
 
-    if (network !== chainId) {
-      changeNetwork({ chainId });
-    } else {
-      if (balance < amount) {
-        toast.error("Insufficient balance");
-        return false;
-      }
-      const truncateAmount = truncateDecimals(amount, 2);
-      const gas = await getPolygonGas();
-
-      var transaction = web3.eth
-        .sendTransaction({
-          from: account,
-          to: channel.wallet,
-          value: web3.utils.toWei(truncateAmount.toString(), "ether"),
-          gasPrice: web3.utils.toWei((gas.fastest * 2).toString(), "gwei"),
-          gasLimit: web3.utils.toWei("600", "kwei"),
-        })
-        .on("receipt", (receipt) => {
-          writeToChat({ user, amount, token, message, channel });
-          saveDonation({ user, channel, amount: truncateAmount, token });
-          setAmount(0);
-          setMessage("");
-          readBalance();
-        })
-        .on("error", console.error);
-
-      toast.promise(transaction, {
-        loading: "Pending...",
-        success: "Confirmed",
-        error: "Failed",
-      });
+    // if (network !== chainId) {
+    //   changeNetwork({ chainId });
+    // } else {
+    if (balance < amount) {
+      toast.error("Insufficient balance");
+      return false;
     }
+    const truncateAmount = truncateDecimals(amount, 2);
+    // const gas = await getPolygonGas();
+    const block = await web3.eth.getBlockNumber();
+
+    var transaction = contract.methods
+      .newDonation(profile.wallet, parseInt(block + 49))
+      .send({
+        from: account,
+        value: web3.utils.toWei(truncateAmount.toString(), "ether"),
+        // gasPrice: web3.utils.toWei(gas.toString(), "gwei"),
+        // gasLimit: 500000,
+      })
+      .on("receipt", (receipt) => {
+        console.log("sended!");
+        saveDonation({ user, channel, amount: truncateAmount, token });
+        writeToChat(user, amount, token, message, channel);
+        setAmount("");
+        setMessage("");
+        readBalance();
+        return false;
+      })
+      .on("error", (err, receipt) => {
+        if (err.code === -32603) {
+          toast.error("This transaction needs more gas to be executed");
+          return false;
+        }
+        if (err.code === 4001) {
+          toast.error("Denied transaction signature");
+          return false;
+        }
+        if (!err.code) {
+          toast.error("Transaction reverted");
+          return false;
+        }
+      });
+
+    // toast.promise(transaction, {
+    //   loading: "Pending...",
+    //   success: "Confirmed",
+    //   error: "Failed",
+    // });
+    // }
   };
 
   return { sendTokens };

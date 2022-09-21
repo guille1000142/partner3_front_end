@@ -1,16 +1,25 @@
 import { Grid, Card, useTheme } from "@nextui-org/react";
 import MaticDark from "../../../assets/imgs/polygon_dark.png";
 // import BnbDark from "../../assets/imgs/bnb_dark.png";
-import MaticLight from "../../../assets/imgs/polygon_light.png";
+// import MaticLight from "../../../assets/imgs/polygon_light.png";
 // import BnbLight from "../../assets/imgs/bnb_light.png";
 import styles from "../dashboard.module.css";
 
 const ModalCards = ({ icon, color, value, text }) => {
+  const { isDark } = useTheme();
+
   return (
-    <Grid>
-      <Card css={{ minWidth: "300px", minHeight: "100px" }}>
+    <Grid sm={4}>
+      <Card
+        css={{
+          minWidth: "340px",
+          minHeight: "100px",
+          bg: isDark ? "#BEBEBE" : "#ffffff",
+        }}
+      >
         <Card.Body
           css={{
+            paddingLeft: "25px",
             alignItems: "center",
             display: "grid",
             gap: "1rem",
@@ -46,14 +55,7 @@ export default function Stats({ donationData }) {
         />
         <ModalCards
           color={isDark ? "purple-light" : "purple-light"}
-          icon={
-            <img
-              width={32}
-              height={32}
-              src={isDark ? MaticLight : MaticDark}
-              alt="Matic"
-            />
-          }
+          icon={<img width={32} height={32} src={MaticDark} alt="Matic" />}
           value={donationData.totalTokens}
           text="MATIC Tokens"
         />

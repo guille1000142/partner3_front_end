@@ -1,7 +1,7 @@
 import { Text, Table, Col, Row, User } from "@nextui-org/react";
-
-export default function Promoted({ data }) {
-  const column = [{ name: "Channel", uid: "channel" }];
+import { useNavigate } from "react-router-dom";
+export default function Promoted({ isDark, promos }) {
+  let navigate = useNavigate();
 
   const renderCell = (user, columnKey) => {
     const cellValue = user[columnKey];
@@ -9,10 +9,9 @@ export default function Promoted({ data }) {
     switch (columnKey) {
       case "channel":
         return (
-          <Col>
+          <Col onClick={() => navigate(`/donations/${user.cid}`)}>
             <Row>
               <User
-                zoomed
                 bordered
                 size="sm"
                 color="secondary"
@@ -30,18 +29,23 @@ export default function Promoted({ data }) {
 
   return (
     <Table
-      css={{ width: "280px", height: "612px" }}
+      css={{
+        width: "300px",
+        bg: isDark
+          ? "linear-gradient(300deg, rgba(190,190,190,1) 0%, rgba(235,235,235,1) 100%)"
+          : "#ffffff",
+      }}
       selectionMode="none"
       color="secondary"
     >
-      <Table.Header columns={column}>
+      <Table.Header columns={promos.column}>
         {(column) => (
           <Table.Column align="center" key={column.uid}>
             {column.name}
           </Table.Column>
         )}
       </Table.Header>
-      <Table.Body items={data}>
+      <Table.Body items={promos.data}>
         {(item) => (
           <Table.Row>
             {(columnKey) => (
@@ -50,7 +54,6 @@ export default function Promoted({ data }) {
           </Table.Row>
         )}
       </Table.Body>
-      <Table.Pagination shadow noMargin align="center" rowsPerPage={10} />
     </Table>
   );
 }

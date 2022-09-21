@@ -1,7 +1,7 @@
 import { Text, Table, Col, Row, Avatar } from "@nextui-org/react";
 import PolygonLogo from "../../../assets/imgs/polygon.png";
 
-export default function Live({ live }) {
+export default function Live({ isDark, live }) {
   const renderCell = (user, columnKey) => {
     const cellValue = user[columnKey];
 
@@ -10,13 +10,7 @@ export default function Live({ live }) {
         return (
           <Col>
             <Row>
-              <Avatar
-                zoomed
-                bordered
-                size="sm"
-                color="secondary"
-                src={user.photo}
-              />
+              <Avatar bordered size="sm" color="secondary" src={user.photo} />
             </Row>
           </Col>
         );
@@ -63,7 +57,12 @@ export default function Live({ live }) {
 
   return (
     <Table
-      css={{ width: "280px", height: "612px" }}
+      css={{
+        width: "300px",
+        bg: isDark
+          ? "linear-gradient(300deg, rgba(190,190,190,1) 0%, rgba(235,235,235,1) 100%)"
+          : "#ffffff",
+      }}
       selectionMode="none"
       color="secondary"
     >
@@ -83,7 +82,6 @@ export default function Live({ live }) {
           </Table.Row>
         )}
       </Table.Body>
-      <Table.Pagination shadow noMargin align="center" rowsPerPage={10} />
     </Table>
   );
 }

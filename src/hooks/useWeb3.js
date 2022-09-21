@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import Web3 from "web3";
-import UniswapRouter from "../abis/RouterPolygon/IUniswapV2Router02.json";
-import { pMaticAddress, pUsdcAddress, pRouterAddress } from "../utils/address";
 import toast from "react-hot-toast";
+
+import UniswapRouter from "../abis/RouterPolygon/IUniswapV2Router02.json";
+import ParnerAbi from "../abis/PartnerContract/PartnerContract.json";
+import {
+  pMaticAddress,
+  pUsdcAddress,
+  pRouterAddress,
+  mPartnerAddress,
+} from "../utils/address";
 
 export default function useWeb3() {
   const [maticPrice, setMaticPrice] = useState(false);
@@ -10,6 +17,7 @@ export default function useWeb3() {
   const [network, setNetwork] = useState("");
   const [balance, setBalance] = useState(0);
   const [web3, setWeb3] = useState(false);
+  const [contract, setContract] = useState(false);
 
   useEffect(() => {
     const user = process.env.REACT_APP_CHAINSTACK_USER;
@@ -36,6 +44,12 @@ export default function useWeb3() {
 
     const metamaskWeb3 = new Web3(window.ethereum);
     setWeb3(metamaskWeb3);
+
+    const partnerContract = new metamaskWeb3.eth.Contract(
+      ParnerAbi,
+      mPartnerAddress
+    );
+    setContract(partnerContract);
 
     window.ethereum
       .request({ method: "eth_accounts" })
@@ -155,6 +169,7 @@ export default function useWeb3() {
     network,
     balance,
     web3,
+    contract,
     maticPrice,
   };
 }

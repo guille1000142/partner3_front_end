@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Text, useTheme, Loading, Link } from "@nextui-org/react";
+import { Text, useTheme, Loading, Spacer } from "@nextui-org/react";
 import styles from "../donations.module.css";
 import Donation from "./Donation";
 import useChannel from "../../../hooks/useChannel";
@@ -29,18 +29,18 @@ export default function Channel() {
   // }, [urlParams]);
 
   useEffect(() => {
-    if (users) {
+    if (users && !profile) {
       const userProfile = users.find((user) => user.id === id);
       setProfile(userProfile);
     }
-  }, [users]);
+  }, [users, profile]);
 
   return channel ? (
     <>
       <div className="title">
         <Text
           css={{
-            textGradient: "45deg, $yellow600 -20%, $purple600 100%",
+            textGradient: "45deg, $purple600 0%, $yellow600 100%",
           }}
           weight="bold"
           h1
@@ -53,15 +53,22 @@ export default function Channel() {
         {profile ? (
           profile.wallet ? (
             <>
-              <Text h5>User is registered in partner3!</Text>
-              <Text h6>Wallet: {profile.wallet}</Text>
+              <Text css={{ color: isDark ? "#ffffff" : "#000000" }} h5>
+                User is registered in partner3!
+              </Text>
+              <Text css={{ color: isDark ? "#ffffff" : "#000000" }} h6>
+                Wallet:{" "}
+                {profile.wallet.substring(0, 5) +
+                  "..." +
+                  profile.wallet.substring(38, 42)}
+              </Text>
             </>
           ) : (
             <>
-              <Text h5>
+              <Text css={{ color: isDark ? "#ffffff" : "#000000" }} h5>
                 User is registered in partner3, but no wallet setted!
               </Text>
-              <Text h6>
+              <Text css={{ color: isDark ? "#ffffff" : "#000000" }} h6>
                 Tokens will save in our reserves meantime. &nbsp;
                 <a>More info here</a>
               </Text>
@@ -69,14 +76,17 @@ export default function Channel() {
           )
         ) : (
           <>
-            <Text h5>User is not registered in partner3!</Text>
-            <Text h6>
+            <Text css={{ color: isDark ? "#ffffff" : "#000000" }} h5>
+              User is not registered in partner3!
+            </Text>
+            <Text css={{ color: isDark ? "#ffffff" : "#000000" }} h6>
               Tokens will save in our reserves meantime. &nbsp;
               <a>More info here</a>
             </Text>
           </>
         )}
-        <Donation profile={profile} name={channel.broadcaster_name} />
+        <Spacer />
+        <Donation channel={channel} profile={profile} />
       </div>
     </>
   ) : (

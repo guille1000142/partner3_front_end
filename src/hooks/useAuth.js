@@ -1,9 +1,13 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useSave from "./useSave";
 import useUsers from "./socket/useUsers";
 
-export default function useAuth({ setUser }) {
+export default function useAuth() {
+  const [user, setUser] = useState(
+    JSON.parse(window.sessionStorage.getItem("user"))
+  );
+
   let navigate = useNavigate();
   const { saveUser } = useSave();
   const { users } = useUsers();
@@ -63,5 +67,15 @@ export default function useAuth({ setUser }) {
     }
   }, [token, users]);
 
-  return null;
+  const handleLogin = () => {
+    const clientId = process.env.REACT_APP_TWITCH_CLIENT_ID;
+    const redirectUri = "https://partner3.live";
+    const responseType = "token";
+    const scope = window.encodeURI(
+      "channel:read:subscriptions user:read:email"
+    );
+    window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+  };
+
+  return { handleLogin, user, setUser };
 }

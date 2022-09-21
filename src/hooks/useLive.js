@@ -10,9 +10,10 @@ export default function useLive({ donations }) {
       TimeAgo.addDefaultLocale(en);
       const timeAgo = new TimeAgo("en-US");
 
-      const donationData = donations.slice(0, 40);
+      const order = donations.sort((a, b) => b.time - a.time);
+      const limit = order.slice(0, 10);
 
-      const data = donationData.map((donation, index) => {
+      const data = limit.map((donation, index) => {
         const object = {
           id: index + 1,
           photo: donation.photo,

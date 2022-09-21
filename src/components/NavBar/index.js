@@ -11,30 +11,19 @@ import {
 import { useTheme as useNextTheme } from "next-themes";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import useThemeApp from "../../hooks/useThemeApp";
 import { Profile } from "./components/Modals";
 import Logo from "../../assets/imgs/logo.png";
 
 export default function NavBar() {
-  const [user, setUser] = useState(
-    JSON.parse(window.sessionStorage.getItem("user"))
-  );
   const [profile, setProfile] = useState(false);
   const [settings, setSettings] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  useAuth({ setUser });
+  const { handleLogin, user, setUser } = useAuth();
   const { setTheme } = useNextTheme();
   const { isDark } = useTheme();
-
-  const handleLogin = () => {
-    const clientId = process.env.REACT_APP_TWITCH_CLIENT_ID;
-    const redirectUri = "http://localhost:3000";
-    const responseType = "token";
-    const scope = window.encodeURI(
-      "channel:read:subscriptions user:read:email"
-    );
-    window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
-  };
+  useThemeApp({ isDark });
 
   const handleAction = (action) => {
     if (action === "dashboard") {
@@ -60,14 +49,14 @@ export default function NavBar() {
         isCompact
         shouldHideOnScroll
         isBordered
-        variant="sticky"
+        variant="static"
       >
         <Navbar.Brand>
           <Navbar.Toggle showIn="xs" />
           &nbsp;
           <img src={Logo} alt="logo" width="40" height="40" />
           &nbsp;
-          <Text b size={20}>
+          <Text b size={20} css={{ color: isDark ? "#ffffff" : "#000000" }}>
             Partner3
           </Text>
         </Navbar.Brand>
@@ -78,12 +67,14 @@ export default function NavBar() {
           variant="underline-rounded"
         >
           <Navbar.Link
+            css={{ color: isDark ? "#ffffff" : "#000000" }}
             isActive={location.pathname === "/"}
             onPress={() => navigate("/")}
           >
             Home
           </Navbar.Link>
           <Navbar.Link
+            css={{ color: isDark ? "#ffffff" : "#000000" }}
             isActive={location.pathname === "/donations"}
             onPress={() => navigate("/donations")}
           >
@@ -94,8 +85,9 @@ export default function NavBar() {
           <i
             onClick={() => setTheme(isDark ? "light" : "dark")}
             className={`icon ${
-              isDark ? "fa-solid fa-sun" : "fa-solid fa-moon"
+              isDark ? "fa-solid fa-sun light" : "fa-solid fa-moon dark"
             }`}
+            // className={`icon ${"fa-solid fa-moon dark"}`}
           ></i>
           {!user ? (
             <Button solid onPress={handleLogin} color="secondary" size="sm">
@@ -125,15 +117,17 @@ export default function NavBar() {
                 onAction={(action) => handleAction(action)}
               >
                 <Dropdown.Item
-                  icon={<i class="fa-solid fa-chart-line"></i>}
+                  icon={<i className="fa-solid fa-chart-line"></i>}
                   key="dashboard"
+                  color="success"
                 >
                   Dashboard
                 </Dropdown.Item>
                 <Dropdown.Item
                   withDivider
-                  icon={<i class="fa-solid fa-address-card"></i>}
+                  icon={<i className="fa-solid fa-address-card"></i>}
                   key="profile"
+                  color="secondary"
                 >
                   Profile
                 </Dropdown.Item>
