@@ -9,12 +9,14 @@ const ModalCards = ({ icon, color, value, text }) => {
   const { isDark } = useTheme();
 
   return (
-    <Grid sm={4}>
+    <Grid>
       <Card
         css={{
           minWidth: "340px",
           minHeight: "100px",
-          bg: isDark ? "#BEBEBE" : "#ffffff",
+          bg: isDark
+            ? "linear-gradient(300deg, rgba(190,190,190,1) 0%, rgba(235,235,235,1) 100%)"
+            : "#ffffff",
         }}
       >
         <Card.Body
@@ -42,7 +44,7 @@ const ModalCards = ({ icon, color, value, text }) => {
 export default function Stats({ donationData }) {
   const { isDark } = useTheme();
 
-  const maxValue = 200;
+  // const maxValue = 200;
 
   return (
     <div className={styles.cards}>
@@ -52,6 +54,12 @@ export default function Stats({ donationData }) {
           icon={<i className="fa-solid fa-circle-dollar-to-slot"></i>}
           value={donationData.totalDonations}
           text="Donations"
+        />
+        <ModalCards
+          color={isDark ? "green-light" : "green-light"}
+          icon={<i className="fa-solid fa-sack-dollar"></i>}
+          value={`$${donationData.totalEarnings}`}
+          text="Messages"
         />
         <ModalCards
           color={isDark ? "purple-light" : "purple-light"}

@@ -89,7 +89,7 @@ export default function Home() {
         {tops && live && promos ? (
           <Grid.Container
             css={{ marginTop: "20px" }}
-            gap={4}
+            gap={3}
             justify="space-evenly"
           >
             <Grid>

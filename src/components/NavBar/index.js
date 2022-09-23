@@ -102,8 +102,15 @@ export default function NavBar() {
         <Navbar.Brand>
           <img src={Logo} alt="logo" width="40" height="40" />
           &nbsp;
-          <Text b size={20} css={{ color: isDark ? "#ffffff" : "#000000" }}>
-            Partner3
+          <Text
+            b
+            size={22}
+            css={{
+              color: isDark ? "#ffffff" : "#000000",
+              fontFamily: "Berlin Sans FB Demi, sans-serif",
+            }}
+          >
+            PARTNER3
           </Text>
         </Navbar.Brand>
         <Navbar.Content
@@ -192,7 +199,7 @@ export default function NavBar() {
         </Navbar.Content>
       </Navbar>
       <div className="mobile-menu" onClick={() => setMobile(!mobile)}>
-        <h2>Partner3</h2>
+        <h2>PARTNER3</h2>
         <span
           className={location.pathname === "/" ? "purple" : ""}
           onClick={() => navigate("/")}

@@ -11,7 +11,7 @@
   color: #ffffff;
   width: 100%;
   max-width: 1150px;
-  background-color: #111441;
+  background-color: #0c0f3a;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   box-shadow: 0px 5px 20px 5px #00000011;
@@ -43,7 +43,7 @@
 }
 
 .coverFooter {
-  padding: 20px;
+  padding: 15px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -53,7 +53,7 @@
 
 .extensionContainer {
   display: flex;
-  width: 580px;
+  width: 550px;
 }
 
 .extensionContainer button {
@@ -67,35 +67,33 @@
 
 .metamask {
   margin-right: 25px;
-  border: 0.5px solid #111441;
+  border: 0.5px solid #0c0f3a;
   align-items: center;
   justify-content: center;
   font-size: 18;
   font-weight: 600;
   color: #ffffff;
-  width: 200px;
-  height: 50px;
+  height: 45px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   transition: all 1s ease;
-  box-shadow: 1px 1px 1rem #ff8d4c, -1px -1px 1rem #111441;
+  box-shadow: 1px 1px 1rem #ff8d4c, -1px -1px 1rem #0c0f3a;
 }
 
 .twitch {
-  border: 0.5px solid #111441;
+  border: 0.5px solid #0c0f3a;
   align-items: center;
   justify-content: center;
   font-size: 18;
   font-weight: 600;
   color: #ffffff;
-  width: 200px;
-  height: 50px;
+  height: 45px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   transition: all 1s ease;
-  box-shadow: 1px 1px 1rem #c751fd, -1px -1px 1rem #111441;
+  box-shadow: 1px 1px 1rem #c751fd, -1px -1px 1rem #0c0f3a;
 }
 
 .orange {
@@ -108,20 +106,20 @@
 
 .orange:hover {
   background-color: #ff7322;
-  box-shadow: 1px 1px 1rem #111441, -1px -1px 1rem #ff7322;
+  box-shadow: 1px 1px 1rem #0c0f3a, -1px -1px 1rem #ff7322;
 }
 
 .purple:hover {
   background-color: #b923ff;
-  box-shadow: 1px 1px 1rem #111441, -1px -1px 1rem #b923ff;
+  box-shadow: 1px 1px 1rem #0c0f3a, -1px -1px 1rem #b923ff;
 }
 
 .orange:active {
-  box-shadow: inset 0.5px 0.5px 1rem #111441, -0.5px -0.5px 1rem #ff7322;
+  box-shadow: inset 0.5px 0.5px 1rem #0c0f3a, -0.5px -0.5px 1rem #ff7322;
 }
 
 .purple:active {
-  box-shadow: inset 0.5px 0.5px 1rem #111441, -0.5px -0.5px 1rem #b923ff;
+  box-shadow: inset 0.5px 0.5px 1rem #0c0f3a, -0.5px -0.5px 1rem #b923ff;
 }
 
 .promoted i {

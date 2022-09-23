@@ -14,6 +14,7 @@ import Picker from "emoji-picker-react";
 import { useNavigate } from "react-router-dom";
 import useWeb3 from "../../../hooks/useWeb3";
 import useDonation from "../../../hooks/useDonation";
+import useAuth from "../../../hooks/useAuth";
 import styles from "../donations.module.css";
 import MaticLight from "../../../assets/imgs/polygon_light.png";
 import MaticDark from "../../../assets/imgs/polygon_dark.png";
@@ -36,7 +37,9 @@ export default function Donation({ channel, profile }) {
     web3,
   } = useWeb3();
   const { sendTokens } = useDonation();
+  const { handleLogin } = useAuth();
   const navigate = useNavigate();
+
   const handleAmount = (e) => {
     e.preventDefault();
     setAmount(parseFloat(e.target.value));
@@ -53,16 +56,6 @@ export default function Donation({ channel, profile }) {
     if (message.length < 50) {
       setMessage(message + emoticon);
     }
-  };
-
-  const handleLogin = () => {
-    const clientId = process.env.REACT_APP_TWITCH_CLIENT_ID;
-    const redirectUri = "http://localhost:3000";
-    const responseType = "token";
-    const scope = window.encodeURI(
-      "channel:read:subscriptions user:read:email"
-    );
-    window.location.href = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
   };
 
   return (
@@ -269,7 +262,6 @@ export default function Donation({ channel, profile }) {
               size="md"
               color="secondary"
               css={{ fontSize: "20px" }}
-              shadow
             >
               <div className="login">
                 <i className="fa-brands fa-twitch"></i>
