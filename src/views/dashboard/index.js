@@ -1,5 +1,5 @@
 import { Text, Button, Loading } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useDonations from "../../hooks/socket/useDonations";
 import useUsers from "../../hooks/socket/useUsers";
 import styles from "./dashboard.module.css";
@@ -16,6 +16,7 @@ const truncateDecimals = function (number, digits) {
 };
 
 export default function Dashboard() {
+  const reference = useRef();
   const user = JSON.parse(window.sessionStorage.getItem("user"));
   const [donationData, setDonationData] = useState(false);
   const [view, setView] = useState(false);
@@ -85,74 +86,85 @@ export default function Dashboard() {
     }
   }, [donations, user, donationData, maticPrice]);
 
-  return user ? (
-    users && profile && donationData ? (
-      <>
+  const scrollToReference = () => {
+    reference.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToReference, []);
+
+  return (
+    <>
+      <div ref={reference}></div>
+      {user ? (
+        users && profile && donationData ? (
+          <>
+            <div className="title">
+              <Text
+                css={{
+                  textGradient: "45deg, $purple600 0%, $yellow600 100%",
+                }}
+                weight="bold"
+                h1
+                size={30}
+              >
+                DASHBOARD
+              </Text>
+            </div>
+            <div className={styles.view}>
+              <Button.Group color="secondary">
+                <Button
+                  style={{
+                    maxWidth: "50px",
+                    minWidth: "30px",
+                    padding: "0 50px",
+                  }}
+                  ghost={view}
+                  solid={!view}
+                  onPress={() => setView(false)}
+                >
+                  Streamer
+                </Button>
+                <Button
+                  style={{
+                    maxWidth: "50px",
+                    minWidth: "30px",
+                    padding: "0 50px",
+                  }}
+                  ghost={!view}
+                  solid={view}
+                  onPress={() => setView(true)}
+                >
+                  Viewer
+                </Button>
+              </Button.Group>
+            </div>
+            {view ? (
+              <Stats view={view} donationData={donationData.userData} />
+            ) : profile.wallet ? (
+              <Stats view={view} donationData={donationData.channelData} />
+            ) : (
+              <Register user={user} setProfile={setProfile} />
+            )}
+          </>
+        ) : (
+          <div className="loading">
+            <Loading size="lg" color="secondary" />
+          </div>
+        )
+      ) : (
         <div className="title">
           <Text
             css={{
-              textGradient: "45deg, $purple600 0%, $yellow600 100%",
+              textGradient: "45deg, $yellow600 -20%, $purple600 100%",
             }}
             weight="bold"
             h1
             size={30}
           >
-            DASHBOARD
+            LOGIN WITH TWITCH
           </Text>
         </div>
-        <div className={styles.view}>
-          <Button.Group color="secondary">
-            <Button
-              style={{
-                maxWidth: "50px",
-                minWidth: "30px",
-                padding: "0 50px",
-              }}
-              ghost={view}
-              solid={!view}
-              onPress={() => setView(false)}
-            >
-              Streamer
-            </Button>
-            <Button
-              style={{
-                maxWidth: "50px",
-                minWidth: "30px",
-                padding: "0 50px",
-              }}
-              ghost={!view}
-              solid={view}
-              onPress={() => setView(true)}
-            >
-              Viewer
-            </Button>
-          </Button.Group>
-        </div>
-        {view ? (
-          <Stats view={view} donationData={donationData.userData} />
-        ) : profile.wallet ? (
-          <Stats view={view} donationData={donationData.channelData} />
-        ) : (
-          <Register user={user} setProfile={setProfile} />
-        )}
-      </>
-    ) : (
-      <div className="loading">
-        <Loading size="lg" color="secondary" />
-      </div>
-    )
-  ) : (
-    <div className="title">
-      <Text
-        css={{
-          textGradient: "45deg, $yellow600 -20%, $purple600 100%",
-        }}
-        weight="bold"
-        h1
-        size={30}
-      >
-        LOGIN WITH TWITCH
-      </Text>
-    </div>
+      )}
+    </>
   );
 }

@@ -41,7 +41,7 @@ export default function useDonation() {
       return false;
     }
 
-    const minimumAmount = token === "MATIC" ? 1 : 0.01;
+    const minimumAmount = 0.2;
 
     if (amount < minimumAmount) {
       toast.error("Minimum amount " + minimumAmount);

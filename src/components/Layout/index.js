@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useEffect } from "react";
 import { toast, ToastBar, Toaster, useToasterStore } from "react-hot-toast";
 import { Outlet } from "react-router-dom";
 import { createTheme, NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { Context } from "../../context/Context";
+// import { Context } from "../../context/Context";
 import NavBar from "../NavBar";
 
 const lightTheme = createTheme({
@@ -24,24 +24,24 @@ const darkTheme = createTheme({
 });
 
 export function GlobalLayout() {
-  const [user, setUser] = useState(false);
-  const [channel, setChannel] = useState(false);
-  const [history, setHistory] = useState(false);
-  console.log({ user, channel });
+  // const [user, setUser] = useState(false);
+  // const [channel, setChannel] = useState(false);
+  // const [history, setHistory] = useState(false);
   return (
-    <Context.Provider
-      value={useMemo(
-        () => ({
-          user,
-          setUser,
-          channel,
-          setChannel,
-          history,
-          setHistory,
-        }),
-        [user, setUser, channel, setChannel, history, setHistory]
-      )}
-    >
+    // <Context.Provider
+    //   value={useMemo(
+    //     () => ({
+    //       user,
+    //       setUser,
+    //       channel,
+    //       setChannel,
+    //       history,
+    //       setHistory,
+    //     }),
+    //     [user, setUser, channel, setChannel, history, setHistory]
+    //   )}
+    // >
+    <>
       <ToastModal />
       <NextThemesProvider
         defaultTheme="system"
@@ -62,7 +62,8 @@ export function GlobalLayout() {
           </main>
         </NextUIProvider>
       </NextThemesProvider>
-    </Context.Provider>
+    </>
+    // </Context.Provider>
   );
 }
 

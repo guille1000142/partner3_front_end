@@ -7,7 +7,6 @@ export default function usePromotions() {
 
   useEffect(() => {
     const listener = (data) => {
-      console.log(data);
       setPromotions(data);
     };
 

@@ -1,5 +1,7 @@
-import { Text, Table, Col, Row, User } from "@nextui-org/react";
+import { Button, Table, Col, Row, User } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
+import styles from "../home.module.css";
+
 export default function Promoted({ isDark, promos }) {
   let navigate = useNavigate();
 
@@ -9,8 +11,9 @@ export default function Promoted({ isDark, promos }) {
     switch (columnKey) {
       case "channel":
         return (
-          <Col onClick={() => navigate(`/donations/${user.cid}`)}>
+          <Col>
             <Row>
+              {/* <div className={styles.promoted}> */}
               <User
                 bordered
                 size="sm"
@@ -18,6 +21,21 @@ export default function Promoted({ isDark, promos }) {
                 src={user.photo}
                 name={user.channel}
               />
+              {/* </div> */}
+            </Row>
+          </Col>
+        );
+
+      case "cid":
+        return (
+          <Col>
+            <Row>
+              <div className={styles.promoted}>
+                <i
+                  onClick={() => navigate(`/donations/${cellValue}`)}
+                  className="fa-solid fa-arrow-up-right-from-square"
+                ></i>
+              </div>
             </Row>
           </Col>
         );
@@ -40,14 +58,21 @@ export default function Promoted({ isDark, promos }) {
     >
       <Table.Header columns={promos.column}>
         {(column) => (
-          <Table.Column align="center" key={column.uid}>
+          <Table.Column align="start" key={column.uid}>
             {column.name}
           </Table.Column>
         )}
       </Table.Header>
       <Table.Body items={promos.data}>
         {(item) => (
-          <Table.Row>
+          <Table.Row
+            css={{
+              "&:hover": {
+                background: "$purple100",
+                color: "$purple800",
+              },
+            }}
+          >
             {(columnKey) => (
               <Table.Cell>{renderCell(item, columnKey)}</Table.Cell>
             )}

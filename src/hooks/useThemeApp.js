@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 
-export default function useThemeApp({ isDark }) {
+export default function useThemeApp({ isDark, setTheme }) {
+  useEffect(() => {
+    setTheme("dark");
+  }, []);
+
   useEffect(() => {
     let main = document.querySelectorAll("body")[0];
 

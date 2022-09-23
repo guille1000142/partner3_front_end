@@ -1,9 +1,10 @@
 import { Text, Table, Col, Row, User } from "@nextui-org/react";
+import styles from "../home.module.css";
 
 export default function TopDonation({ isDark, donation }) {
   const column = [
     { name: "Nº", uid: "index" },
-    { name: "User", uid: "user" },
+    { name: "Viewer", uid: "user" },
     { name: "Donations", uid: "donations" },
   ];
 
@@ -11,6 +12,24 @@ export default function TopDonation({ isDark, donation }) {
     const cellValue = user[columnKey];
 
     switch (columnKey) {
+      case "index":
+        return (
+          <Col>
+            <Row>
+              <div
+                className={
+                  styles[
+                    (cellValue === 1 && "gold") ||
+                      (cellValue === 2 && "silver") ||
+                      (cellValue === 3 && "bronce")
+                  ]
+                }
+              >
+                {cellValue}
+              </div>
+            </Row>
+          </Col>
+        );
       case "user":
         return (
           <Col>
@@ -78,7 +97,7 @@ export default function TopDonation({ isDark, donation }) {
     >
       <Table.Header columns={column}>
         {(column) => (
-          <Table.Column align="center" key={column.uid}>
+          <Table.Column align="start" key={column.uid}>
             {column.name}
           </Table.Column>
         )}

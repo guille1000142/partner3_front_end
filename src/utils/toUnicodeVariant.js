@@ -14,7 +14,7 @@
  * w: fullwidth
  */
 
-function toUnicodeVariant(str, variant, flags) {
+export default function toUnicodeVariant(str, variant, flags) {
   const offsets = {
     m: [0x1d670, 0x1d7f6],
     b: [0x1d400, 0x1d7ce],

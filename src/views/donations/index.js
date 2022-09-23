@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Text,
@@ -21,7 +22,7 @@ const ModalCards = ({ id, photo, name, title, wallet }) => {
   const isMobileResolution = useMatchMedia("(max-width:700px)", false);
   const { isDark } = useTheme();
   return (
-    <div className={styles.cardMain} ey={id}>
+    <div className={styles.cardMain} key={id}>
       <Card
         className={styles.cardChannel}
         css={{
@@ -84,6 +85,7 @@ const ModalCards = ({ id, photo, name, title, wallet }) => {
 };
 
 export default function Donations() {
+  const reference = useRef();
   const { isDark } = useTheme();
   const { searchChannel, result } = useSearch();
   const { promotions } = usePromotions();
@@ -95,8 +97,15 @@ export default function Donations() {
     searchChannel(search);
   };
 
+  const scrollToReference = () => {
+    reference.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToReference, []);
+
   return (
     <>
+      <div ref={reference}></div>
       <div className="title">
         <Text
           css={{
@@ -142,9 +151,9 @@ export default function Donations() {
               Live Channels
             </Text>
             <Spacer />
-            {result.map((data) => {
+            {result.map((data, index) => {
               return (
-                <div className={styles.channels}>
+                <div className={styles.channels} key={index}>
                   <ModalCards
                     id={data.id}
                     photo={data.thumbnail_url}
@@ -161,9 +170,9 @@ export default function Donations() {
               Promoted Channels
             </Text>
             <Spacer />
-            {promos.data.map((data) => {
+            {promos.data.map((data, index) => {
               return (
-                <div className={styles.channels}>
+                <div className={styles.channels} key={index}>
                   <ModalCards
                     id={data.cid}
                     photo={data.photo}

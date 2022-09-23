@@ -4,7 +4,6 @@ import useBot from "./socket/useBot";
 export default function useChannel(id) {
   const [channel, setChannel] = useState(false);
   const { bot } = useBot();
-  console.log(bot);
 
   useEffect(() => {
     if (bot && id) {

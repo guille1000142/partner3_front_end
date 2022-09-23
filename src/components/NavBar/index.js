@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Navbar,
   Button,
-  Link,
   Text,
   Dropdown,
   Avatar,
@@ -11,19 +10,22 @@ import {
 import { useTheme as useNextTheme } from "next-themes";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { useMatchMedia } from "../../hooks/useMatchMedia";
 import useThemeApp from "../../hooks/useThemeApp";
 import { Profile } from "./components/Modals";
 import Logo from "../../assets/imgs/logo.png";
 
 export default function NavBar() {
+  const isMobileResolution = useMatchMedia("(max-width:650px)", false);
   const [profile, setProfile] = useState(false);
   const [settings, setSettings] = useState(false);
+  const [mobile, setMobile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { handleLogin, user, setUser } = useAuth();
   const { setTheme } = useNextTheme();
   const { isDark } = useTheme();
-  useThemeApp({ isDark });
+  useThemeApp({ isDark, setTheme });
 
   const handleAction = (action) => {
     if (action === "dashboard") {
@@ -41,9 +43,55 @@ export default function NavBar() {
     }
   };
 
+  useEffect(() => {
+    if (isMobileResolution) {
+      const container = document.querySelector(".btn-flotante");
+      const menuIcon = document.querySelector(".menu-btn");
+      const mobileMenu = document.querySelector(".mobile-menu");
+      const body = document.querySelectorAll("body")[0];
+
+      mobileMenu.style.backgroundColor = isDark ? "#000000e5" : "#ffffffe5";
+      mobileMenu.style.color = isDark ? "#ffffff" : "#000000";
+
+      if (mobile) {
+        mobileMenu.style.visibility = "visible";
+
+        container.style.opacity = "1";
+        container.style.boxShadow = "2px 1px 6px 0px rgba(109, 109, 109, 0.6)";
+
+        menuIcon.classList.add("open");
+
+        body.style.position = "static";
+        body.style.height = "100%";
+        body.style.overflow = "hidden";
+      } else {
+        mobileMenu.style.visibility = "hidden";
+
+        container.style.opacity = "0.7";
+        container.style.boxShadow = "2px 1px 7px 0px rgba(109, 109, 109, 0.3)";
+
+        menuIcon.classList.remove("open");
+
+        body.style.position = "inherit";
+        body.style.height = "auto";
+        body.style.overflow = "visible";
+      }
+    }
+  }, [isDark, mobile, isMobileResolution]);
+
   return (
     <>
       {user && <Profile user={user} modal={profile} setModal={setProfile} />}
+      {isMobileResolution && (
+        <div
+          role="button"
+          onClick={() => setMobile(!mobile)}
+          className="btn-flotante menu-btn"
+        >
+          <div class="menu-btn__burger"></div>
+        </div>
+      )}
+
       <Navbar
         maxWidth="xl"
         isCompact
@@ -52,8 +100,6 @@ export default function NavBar() {
         variant="static"
       >
         <Navbar.Brand>
-          <Navbar.Toggle showIn="xs" />
-          &nbsp;
           <img src={Logo} alt="logo" width="40" height="40" />
           &nbsp;
           <Text b size={20} css={{ color: isDark ? "#ffffff" : "#000000" }}>
@@ -144,19 +190,22 @@ export default function NavBar() {
             </Dropdown>
           )}
         </Navbar.Content>
-        <Navbar.Collapse>
-          <Navbar.CollapseItem>
-            <Link color="text" onPress={() => navigate("/")}>
-              Home
-            </Link>
-          </Navbar.CollapseItem>
-          <Navbar.CollapseItem>
-            <Link color="text" onPress={() => navigate("/donations")}>
-              Donations
-            </Link>
-          </Navbar.CollapseItem>
-        </Navbar.Collapse>
       </Navbar>
+      <div className="mobile-menu" onClick={() => setMobile(!mobile)}>
+        <h2>Partner3</h2>
+        <span
+          className={location.pathname === "/" ? "purple" : ""}
+          onClick={() => navigate("/")}
+        >
+          <i class="fa-solid fa-house-chimney"></i> &nbsp;Home
+        </span>
+        <span
+          className={location.pathname === "/donations" ? "purple" : ""}
+          onClick={() => navigate("/donations")}
+        >
+          <i class="fa-solid fa-comments-dollar"></i> &nbsp;Donations
+        </span>
+      </div>
     </>
   );
 }

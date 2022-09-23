@@ -12,8 +12,6 @@ export default function useSave() {
       };
       await setDoc(doc(db, "users", user.id), data);
     }
-
-    window.sessionStorage.setItem("user", JSON.stringify(user));
   };
 
   const saveWallet = async (wallet, user) => {

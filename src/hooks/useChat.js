@@ -6,6 +6,9 @@ export default function useChat() {
   const { bot } = useBot();
 
   const writeToChat = (user, amount, token, message, channel) => {
+    if (message === "") {
+      return false;
+    }
     const donation = toUnicodeVariant(amount + " " + token, "bs");
     // const userName = toUnicodeVariant(user.display_name, "gb");
     const text = toUnicodeVariant(message, "is");

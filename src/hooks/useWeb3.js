@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Web3 from "web3";
 import toast from "react-hot-toast";
-
 import UniswapRouter from "../abis/RouterPolygon/IUniswapV2Router02.json";
 import ParnerAbi from "../abis/PartnerContract/PartnerContract.json";
 import {
@@ -20,14 +19,10 @@ export default function useWeb3() {
   const [contract, setContract] = useState(false);
 
   useEffect(() => {
-    const user = process.env.REACT_APP_CHAINSTACK_USER;
-    const password = process.env.REACT_APP_CHAINSTACK_PASSWORD;
-    const url = process.env.REACT_APP_CHAINSTACK_URL;
-
-    // const provider = `wss://${user}:${password}@${url}`;
-    const provider =
-      "https://nd-922-817-491.p2pify.com/207f0dbf875f1ba67c01ca3d1f96d455";
-    const privateWeb3 = new Web3(new Web3.providers.HttpProvider(provider));
+    const privateProvider = process.env.REACT_APP_CHAINSTACK_URL_WS;
+    const privateWeb3 = new Web3(
+      new Web3.providers.WebsocketProvider(privateProvider)
+    );
 
     const polygonSwapContract = new privateWeb3.eth.Contract(
       UniswapRouter.abi,
@@ -42,41 +37,44 @@ export default function useWeb3() {
       )
       .catch((err) => console.log(err));
 
-    const metamaskWeb3 = new Web3(window.ethereum);
-    setWeb3(metamaskWeb3);
+    if (typeof window.ethereum !== "undefined") {
+      const metamaskWeb3 = new Web3(window.ethereum);
+      setWeb3(metamaskWeb3);
 
-    const partnerContract = new metamaskWeb3.eth.Contract(
-      ParnerAbi,
-      mPartnerAddress
-    );
-    setContract(partnerContract);
+      const partnerContract = new metamaskWeb3.eth.Contract(
+        ParnerAbi,
+        mPartnerAddress
+      );
+      setContract(partnerContract);
 
-    window.ethereum
-      .request({ method: "eth_accounts" })
-      .then((account) => setAccount(account[0]))
-      .catch((err) => console.log(err));
+      window.ethereum
+        .request({ method: "eth_accounts" })
+        .then((account) => setAccount(account[0]))
+        .catch((err) => console.log(err));
 
-    window.ethereum
-      .request({ method: "eth_chainId" })
-      .then((chainId) => setNetwork(chainId))
-      .catch((err) => console.log(err));
+      window.ethereum
+        .request({ method: "eth_chainId" })
+        .then((chainId) => setNetwork(chainId))
+        .catch((err) => console.log(err));
 
-    window.ethereum.on("accountsChanged", (accounts) => {
-      setAccount(accounts[0]);
-    });
-
-    window.ethereum.on("chainChanged", (_chainId) => {
-      setNetwork(_chainId);
-    });
-
-    return () => {
-      window.ethereum.removeListener("accountsChanged", (accounts) => {
-        setAccount(accounts);
+      window.ethereum.on("accountsChanged", (accounts) => {
+        setAccount(accounts[0]);
       });
 
-      window.ethereum.removeListener("chainChanged", (_chainId) => {
+      window.ethereum.on("chainChanged", (_chainId) => {
         setNetwork(_chainId);
       });
+    }
+    return () => {
+      if (typeof window.ethereum !== "undefined") {
+        window.ethereum.removeListener("accountsChanged", (accounts) => {
+          setAccount(accounts);
+        });
+
+        window.ethereum.removeListener("chainChanged", (_chainId) => {
+          setNetwork(_chainId);
+        });
+      }
     };
   }, []);
 

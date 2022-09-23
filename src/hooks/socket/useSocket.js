@@ -5,8 +5,7 @@ export default function useSocket() {
   const [socket, setSocket] = useState(false);
 
   useEffect(() => {
-    const wssUrl = `wss://${process.env.REACT_APP_SOCKET_URL}`;
-    const httpsUrl = `https://${process.env.REACT_APP_SOCKET_URL}`;
+    const socketUrl = process.env.REACT_APP_SOCKET_URL_WS;
 
     const JWT = process.env.REACT_APP_JWT;
 
@@ -16,7 +15,7 @@ export default function useSocket() {
       },
     };
 
-    const socketServer = io.connect(wssUrl, socketOptions);
+    const socketServer = io.connect(socketUrl, socketOptions);
     setSocket(socketServer);
   }, []);
 

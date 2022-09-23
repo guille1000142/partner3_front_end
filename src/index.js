@@ -1,6 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  HashRouter,
+  Navigate,
+  BrowserRouter,
+} from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { GlobalLayout } from "./components/Layout";
 import Dashboard from "./views/dashboard";
@@ -14,7 +20,7 @@ import "./index.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <Routes>
       <Route path="/" element={<GlobalLayout />}>
         <Route index element={<Home />} />
@@ -26,7 +32,7 @@ root.render(
         <Route path="*" element={<Navigate replace to="/" />} />
       </Route>
     </Routes>
-  </BrowserRouter>
+  </HashRouter>
 );
 
 reportWebVitals();

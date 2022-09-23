@@ -23,7 +23,6 @@ export default function Donation({ channel, profile }) {
   const [token, setToken] = useState(new Set(["MATIC"]));
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState(false);
   const [emoji, setEmoji] = useState(false);
   const { isDark } = useTheme();
   const {
@@ -38,9 +37,6 @@ export default function Donation({ channel, profile }) {
   } = useWeb3();
   const { sendTokens } = useDonation();
   const navigate = useNavigate();
-
-  console.log(chat);
-
   const handleAmount = (e) => {
     e.preventDefault();
     setAmount(parseFloat(e.target.value));
@@ -248,22 +244,22 @@ export default function Donation({ channel, profile }) {
                       readBalance,
                       channel,
                       profile,
-                      chat,
                     })
               }
               size="md"
               color={!account ? "warning" : "success"}
               css={{ fontSize: "18px" }}
+              disabled={!profile}
             >
               {!account ? (
                 <>
                   <i class="fa-solid fa-wallet"></i>&nbsp;
-                  <span className="bold"> Connect Wallet</span>
+                  <span className="bold">Connect Wallet</span>
                 </>
               ) : (
                 <>
-                  <i className="fa-solid fa-comments-dollar"></i>&nbsp;
-                  <span className="bold"> Send Message</span>
+                  <i class="fa-solid fa-comments-dollar"></i>&nbsp;
+                  <span className="bold">Send Message</span>
                 </>
               )}
             </Button>

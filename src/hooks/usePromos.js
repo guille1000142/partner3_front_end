@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
 
 export default function usePromos({ promotions }) {
   const [promos, setPromos] = useState(false);
@@ -22,7 +20,10 @@ export default function usePromos({ promotions }) {
         return object;
       });
 
-      const column = [{ name: "Channel", uid: "channel" }];
+      const column = [
+        { name: "Channel", uid: "channel" },
+        { name: "Donate", uid: "cid" },
+      ];
 
       setPromos({ column, data });
     }

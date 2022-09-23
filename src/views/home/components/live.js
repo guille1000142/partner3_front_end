@@ -68,7 +68,7 @@ export default function Live({ isDark, live }) {
     >
       <Table.Header columns={live.column}>
         {(column) => (
-          <Table.Column align="center" key={column.uid}>
+          <Table.Column align="start" key={column.uid}>
             {column.name}
           </Table.Column>
         )}

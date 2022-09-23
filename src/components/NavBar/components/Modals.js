@@ -1,13 +1,4 @@
-import {
-  Modal,
-  Text,
-  Avatar,
-  Grid,
-  Table,
-  useTheme,
-  Switch,
-  Spacer,
-} from "@nextui-org/react";
+import { Modal, Text, Avatar, Grid, Table, useTheme } from "@nextui-org/react";
 
 export function Profile({ user, modal, setModal }) {
   const { isDark } = useTheme();

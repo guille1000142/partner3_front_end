@@ -1,12 +1,5 @@
-import {
-  Text,
-  Col,
-  Card,
-  Spacer,
-  Grid,
-  Loading,
-  useTheme,
-} from "@nextui-org/react";
+import { useRef, useEffect } from "react";
+import { Text, Grid, Loading, useTheme } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import useDonations from "../../hooks/socket/useDonations";
 import useTops from "../../hooks/useTops";
@@ -20,6 +13,7 @@ import usePromos from "../../hooks/usePromos";
 import usePromotions from "../../hooks/socket/usePromotions";
 
 export default function Home() {
+  const reference = useRef();
   const { donations } = useDonations();
   const { promotions } = usePromotions();
   const { tops } = useTops({ donations });
@@ -28,10 +22,16 @@ export default function Home() {
   const { isDark } = useTheme();
 
   let navigate = useNavigate();
-  console.log({ donations, promotions });
+
+  const scrollToReference = () => {
+    reference.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToReference, []);
 
   return (
     <>
+      <div ref={reference}></div>
       <div className="title">
         <Text
           css={{
@@ -49,63 +49,43 @@ export default function Home() {
         {/* <a href="https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=9mco1ahj5d62s8l1qtl7fhctsmr446&redirect_uri=http://localhost:3000&scope=chat:edit+chat:read">
           Connect Bot
         </a> */}
-        <Card>
-          <div className={styles.coverContainer}></div>
-          <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
-            <Col>
-              <Text size={16} weight="bold" color="#ffffffAA">
-                Partner3
-              </Text>
-              <Text h3 color="white">
-                Decentralization
-              </Text>
-            </Col>
-          </Card.Header>
-          <Card.Footer
-            css={{
-              bg: isDark ? "#bebebe" : "#FFFFFF",
-            }}
-          >
-            <div className={styles.modalFooter}>
-              <div>
-                <Text color="#000000" size={15}>
-                  Free, fast and secure!
-                </Text>
-                <Text color="#000000" size={15}>
-                  Metamask & Partner3.
-                </Text>
-              </div>
-              <div className={styles.extensionContainer}>
-                <button
-                  onClick={() =>
-                    window.open(
-                      "https://metamask.app.link/dapp/google.es/",
-                      "_blank"
-                    )
-                  }
-                  className={
-                    isDark
-                      ? `${styles.metamaskD} ${styles.orangeD}`
-                      : `${styles.metamaskL} ${styles.orangeL}`
-                  }
-                >
-                  <span>Get Metamask</span>
-                </button>
-                <button
-                  onClick={() => navigate("/donations")}
-                  className={
-                    isDark
-                      ? `${styles.twitchD} ${styles.purpleD}`
-                      : `${styles.twitchL} ${styles.purpleL}`
-                  }
-                >
-                  <span>Donate Now</span>
-                </button>
-              </div>
+        <div className={styles.coverContainer}>
+          <div className={styles.coverHeader}>
+            <Text size={16} weight="bold" color="#ffffffAA">
+              Partner3
+            </Text>
+            <Text h3 color="white">
+              Decentralization
+            </Text>
+          </div>
+        </div>
+        <div className={styles.dark}>
+          <div className={styles.coverFooter}>
+            <div>
+              <p>Free, fast and secure!</p>
+              <p>Metamask & Partner3.</p>
             </div>
-          </Card.Footer>
-        </Card>
-        <Spacer />
+            <div className={styles.extensionContainer}>
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://metamask.app.link/dapp/google.es/",
+                    "_blank"
+                  )
+                }
+                className={`${styles.metamask} ${styles.orange}`}
+              >
+                <span>Get Metamask</span>
+              </button>
+              <button
+                onClick={() => navigate("/donations")}
+                className={`${styles.twitch} ${styles.purple}`}
+              >
+                <span>Donate Now</span>
+              </button>
+            </div>
+          </div>
+        </div>
         {tops && live && promos ? (
           <Grid.Container
             css={{ marginTop: "20px" }}
