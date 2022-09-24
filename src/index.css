@@ -153,3 +153,36 @@ body {
 .purple {
   color: #7828c8;
 }
+
+.gold {
+  border: 3px double rgba(100, 100, 100, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: gold;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
+
+.silver {
+  border: 3px double rgba(100, 100, 100, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: silver;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
+
+.bronze {
+  border: 3px double rgba(100, 100, 100, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #cd7f32;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}

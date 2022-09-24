@@ -17,7 +17,7 @@ const truncateDecimals = function (number, digits) {
 
 export default function Dashboard() {
   const reference = useRef();
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+  const user = JSON.parse(window.localStorage.getItem("user"));
   const [donationData, setDonationData] = useState(false);
   const [view, setView] = useState(false);
   const [profile, setProfile] = useState(false);
@@ -73,12 +73,12 @@ export default function Dashboard() {
       );
 
       const channelData = {
-        totalDonations: channelDonations.length,
+        totalDonations: channelDonations,
         totalTokens: channelMaticTokens,
         totalEarnings: channelMaticEarnings,
       };
       const userData = {
-        totalDonations: userDonations.length,
+        totalDonations: userDonations,
         totalTokens: userMaticTokens,
         totalEarnings: userMaticEarnings,
       };
@@ -139,16 +139,16 @@ export default function Dashboard() {
               </Button.Group>
             </div>
             {view ? (
-              <Stats view={view} donationData={donationData.userData} />
+              <Stats view={view} donations={donationData.userData} />
             ) : profile.wallet ? (
-              <Stats view={view} donationData={donationData.channelData} />
+              <Stats view={view} donations={donationData.channelData} />
             ) : (
               <Register user={user} setProfile={setProfile} />
             )}
           </>
         ) : (
           <div className="loading">
-            <Loading size="lg" color="secondary" />
+            <Loading type="points" size="lg" color="secondary" />
           </div>
         )
       ) : (

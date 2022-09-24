@@ -19,23 +19,21 @@ import styles from "../donations.module.css";
 import MaticLight from "../../../assets/imgs/polygon_light.png";
 import MaticDark from "../../../assets/imgs/polygon_dark.png";
 
-export default function Donation({ channel, profile }) {
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
+export default function Donation({
+  channel,
+  profile,
+  account,
+  network,
+  balance,
+  connectWallet,
+  user,
+  setUser,
+}) {
   const [token, setToken] = useState(new Set(["MATIC"]));
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
   const [emoji, setEmoji] = useState(false);
   const { isDark } = useTheme();
-  const {
-    connectWallet,
-    changeNetwork,
-    readBalance,
-    account,
-    network,
-    balance,
-    contract,
-    web3,
-  } = useWeb3();
   const { sendTokens } = useDonation();
   const { handleLogin } = useAuth();
   const navigate = useNavigate();
@@ -223,20 +221,17 @@ export default function Donation({ channel, profile }) {
                 !account
                   ? connectWallet()
                   : sendTokens({
-                      web3,
-                      contract,
                       account,
                       token: token.entries().next().value[0],
                       network,
-                      changeNetwork,
                       message,
                       setMessage,
                       amount,
                       setAmount,
                       balance,
-                      readBalance,
                       channel,
                       profile,
+                      setUser,
                     })
               }
               size="md"

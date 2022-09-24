@@ -4,9 +4,7 @@ import useSave from "./useSave";
 import useUsers from "./socket/useUsers";
 
 export default function useAuth() {
-  const [user, setUser] = useState(
-    JSON.parse(window.sessionStorage.getItem("user"))
-  );
+  const [user, setUser] = useState(false);
   const navigate = useNavigate();
   const { saveUser } = useSave();
   const { users } = useUsers();
@@ -44,7 +42,7 @@ export default function useAuth() {
                     .then((res) => {
                       res.json().then((profile) => {
                         const user = profile.data[0];
-                        window.sessionStorage.setItem(
+                        window.localStorage.setItem(
                           "user",
                           JSON.stringify(user)
                         );
@@ -68,6 +66,55 @@ export default function useAuth() {
       navigate(-1);
     }
   }, [code, error]);
+
+  const restoreSession = () => {
+    console.log("restoring!");
+    window.sessionStorage.clear();
+    window.localStorage.clear();
+    setUser(false);
+  };
+
+  useEffect(() => {
+    const user_access_token = window.sessionStorage.getItem("token");
+    if (user_access_token !== null) {
+      verifyUser(user_access_token);
+    }
+  }, []);
+
+  const verifyUser = (user_access_token) => {
+    setUser("loading");
+    fetch("https://id.twitch.tv/oauth2/validate", {
+      method: "GET",
+      headers: {
+        Authorization: `OAuth ${user_access_token}`,
+      },
+    })
+      .then((res) => {
+        res.json().then((user) => {
+          fetch(`https://api.twitch.tv/helix/users?id=${user.user_id}`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${user_access_token}`,
+              "Client-Id": process.env.REACT_APP_TWITCH_CLIENT_ID,
+            },
+          })
+            .then((res) => {
+              res
+                .json()
+                .then((profile) => {
+                  const user = profile.data[0];
+                  setUser(user);
+                })
+                .catch((err) => restoreSession());
+            })
+            .catch((err) => restoreSession());
+        });
+      })
+      .catch((err) => {
+        console.log("error!");
+        restoreSession();
+      });
+  };
 
   const handleLogin = () => {
     const clientId = process.env.REACT_APP_TWITCH_CLIENT_ID;

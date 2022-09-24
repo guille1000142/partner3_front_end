@@ -183,16 +183,26 @@ export default function useTops({ donations }) {
     });
 
     var donation = {};
-    donation.day = [...day].sort((a, b) => b.donations - a.donations);
-    donation.week = [...week].sort((a, b) => b.donations - a.donations);
-    donation.month = [...month].sort((a, b) => b.donations - a.donations);
-    donation.global = [...global].sort((a, b) => b.donations - a.donations);
+    donation.day = [...day]
+      .sort((a, b) => b.donations - a.donations)
+      .slice(0, 10);
+    donation.week = [...week]
+      .sort((a, b) => b.donations - a.donations)
+      .slice(0, 10);
+    donation.month = [...month]
+      .sort((a, b) => b.donations - a.donations)
+      .slice(0, 10);
+    donation.global = [...global]
+      .sort((a, b) => b.donations - a.donations)
+      .slice(0, 10);
 
     var amount = {};
-    amount.day = [...day].sort((a, b) => b.amount - a.amount);
-    amount.week = [...week].sort((a, b) => b.amount - a.amount);
-    amount.month = [...month].sort((a, b) => b.amount - a.amount);
-    amount.global = [...global].sort((a, b) => b.amount - a.amount);
+    amount.day = [...day].sort((a, b) => b.amount - a.amount).slice(0, 10);
+    amount.week = [...week].sort((a, b) => b.amount - a.amount).slice(0, 10);
+    amount.month = [...month].sort((a, b) => b.amount - a.amount).slice(0, 10);
+    amount.global = [...global]
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 10);
 
     setTops({ donation, amount });
   };

@@ -5,14 +5,21 @@ import styles from "../donations.module.css";
 import Donation from "./Donation";
 import useChannel from "../../../hooks/useChannel";
 import useUsers from "../../../hooks/socket/useUsers";
+import useBot from "../../../hooks/socket/useBot";
+import useWeb3 from "../../../hooks/useWeb3";
+import useAuth from "../../../hooks/useAuth";
 
 export default function Channel() {
+  const [channel, setChannel] = useState(false);
   const reference = useRef();
   const [profile, setProfile] = useState(false);
   const { isDark } = useTheme();
   const { id } = useParams();
-  const { channel } = useChannel(id);
+  const { bot } = useBot();
+  const { getChannel } = useChannel(id);
   const { users } = useUsers();
+  const { account, network, balance, connectWallet } = useWeb3();
+  const { user, setUser } = useAuth();
 
   // useEffect(() => {
   //   if (donations.length > 0) {
@@ -29,11 +36,14 @@ export default function Channel() {
   // }, [urlParams]);
 
   useEffect(() => {
-    if (users && !profile) {
+    if (users && !profile && bot) {
+      const access_token = bot[1].access_token;
+      getChannel(id, access_token).then((data) => setChannel(data));
+
       const userProfile = users.find((user) => user.id === id);
       setProfile(userProfile);
     }
-  }, [users, profile]);
+  }, [users, profile, bot, id]);
 
   const scrollToReference = () => {
     reference.current.scrollIntoView({ behavior: "smooth" });
@@ -44,7 +54,7 @@ export default function Channel() {
   return (
     <>
       <div ref={reference}></div>
-      {channel ? (
+      {channel && user !== "loading" ? (
         <>
           <div className="title">
             <Text
@@ -95,12 +105,22 @@ export default function Channel() {
               </>
             )}
             <Spacer />
-            <Donation channel={channel} profile={profile} />
+
+            <Donation
+              channel={channel}
+              profile={profile}
+              account={account}
+              network={network}
+              balance={balance}
+              connectWallet={connectWallet}
+              user={user}
+              setUser={setUser}
+            />
           </div>
         </>
       ) : (
         <div className="loading">
-          <Loading size="lg" color="secondary" />
+          <Loading type="points" size="lg" color="secondary" />
         </div>
       )}
     </>

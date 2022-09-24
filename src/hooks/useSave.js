@@ -21,8 +21,7 @@ export default function useSave() {
     await updateDoc(doc(db, "users", user.id), data);
   };
 
-  const saveDonation = async ({ user, channel, amount, token }) => {
-    console.log("saving...");
+  const saveDonation = async ({ user, channel, amount, token, message }) => {
     const data = {
       name: user.display_name.toLowerCase(),
       id: user.id,
@@ -32,6 +31,7 @@ export default function useSave() {
       cid: channel.broadcaster_id,
       channel: channel.broadcaster_name,
       time: Math.round(new Date().getTime() / 1000),
+      message: message !== "" ? true : false,
     };
     await addDoc(collection(db, "donations"), data);
   };

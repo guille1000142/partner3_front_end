@@ -12,7 +12,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useMatchMedia } from "../../hooks/useMatchMedia";
 import useThemeApp from "../../hooks/useThemeApp";
-import { Profile } from "./components/Modals";
+import { Profile } from "./components/Profile";
 import Logo from "../../assets/imgs/logo.png";
 
 export default function NavBar() {
@@ -22,7 +22,7 @@ export default function NavBar() {
   const [mobile, setMobile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { handleLogin, user, setUser } = useAuth();
+  const { user, setUser, handleLogin } = useAuth();
   const { setTheme } = useNextTheme();
   const { isDark } = useTheme();
   useThemeApp({ isDark, setTheme });
@@ -39,6 +39,7 @@ export default function NavBar() {
     }
     if (action === "logout") {
       window.sessionStorage.clear();
+      window.localStorage.clear();
       setUser(false);
     }
   };

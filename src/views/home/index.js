@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react";
 import { Text, Grid, Loading, useTheme } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import useDonations from "../../hooks/socket/useDonations";
 import useTops from "../../hooks/useTops";
 import styles from "./home.module.css";
 import Live from "./components/live";
@@ -10,15 +9,18 @@ import Promoted from "./components/Promoted";
 import TopDonation from "./components/topDonation";
 import useLive from "../../hooks/useLive";
 import usePromos from "../../hooks/usePromos";
+import useUsers from "../../hooks/socket/useUsers";
+import useDonations from "../../hooks/socket/useDonations";
 import usePromotions from "../../hooks/socket/usePromotions";
 
 export default function Home() {
   const reference = useRef();
+  const { users } = useUsers();
   const { donations } = useDonations();
   const { promotions } = usePromotions();
   const { tops } = useTops({ donations });
   const { live } = useLive({ donations });
-  const { promos } = usePromos({ promotions });
+  const { promos } = usePromos({ promotions, users });
   const { isDark } = useTheme();
 
   let navigate = useNavigate();
@@ -124,9 +126,9 @@ export default function Home() {
                 }}
                 h3
               >
-                <i class="fa-solid fa-trophy"></i> &nbsp;Top Amount
+                <i class="fa-solid fa-trophy"></i> &nbsp;Top Donations
               </Text>
-              <TopAmount amount={tops.amount} isDark={isDark} />
+              <TopDonation donation={tops.donation} isDark={isDark} />
             </Grid>
             <Grid>
               <Text
@@ -136,14 +138,14 @@ export default function Home() {
                 }}
                 h3
               >
-                <i class="fa-solid fa-trophy"></i> &nbsp;Top Donations
+                <i class="fa-solid fa-trophy"></i> &nbsp;Top Amount
               </Text>
-              <TopDonation donation={tops.donation} isDark={isDark} />
+              <TopAmount amount={tops.amount} isDark={isDark} />
             </Grid>
           </Grid.Container>
         ) : (
           <div className="loading">
-            <Loading size="lg" color="secondary" />
+            <Loading type="points" size="lg" color="secondary" />
           </div>
         )}
       </div>

@@ -27,9 +27,9 @@ export default function useLive({ donations }) {
       });
 
       const column = [
-        { name: "User", uid: "user" },
+        { name: "Viewer", uid: "user" },
         { name: "Amount", uid: "amount" },
-        { name: "Channel", uid: "channel" },
+        { name: "Streamer", uid: "channel" },
         { name: "Time", uid: "time" },
       ];
 

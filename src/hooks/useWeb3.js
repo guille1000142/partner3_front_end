@@ -87,20 +87,20 @@ export default function useWeb3() {
   };
 
   const readBalance = () => {
-    if (web3 && account && network !== "") {
-      web3.eth
-        .getBalance(account)
-        .then((balance) => {
-          const walletBalance = web3.utils.fromWei(balance.toString(), "ether");
-          const truncate = truncateDecimals(parseFloat(walletBalance), 2);
-          setBalance(truncate);
-        })
-        .catch((err) => console.log(err));
-    }
+    web3.eth
+      .getBalance(account)
+      .then((balance) => {
+        const walletBalance = web3.utils.fromWei(balance.toString(), "ether");
+        const truncate = truncateDecimals(parseFloat(walletBalance), 2);
+        setBalance(truncate);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    readBalance();
+    if (web3 && account && network !== "") {
+      readBalance();
+    }
   }, [account, network, web3]);
 
   const connectWallet = () => {

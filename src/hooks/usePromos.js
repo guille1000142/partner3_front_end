@@ -1,33 +1,55 @@
 import { useState, useEffect } from "react";
+import useBot from "./socket/useBot";
+import useChannel from "./useChannel";
 
-export default function usePromos({ promotions }) {
+export default function usePromos({ promotions, users }) {
   const [promos, setPromos] = useState(false);
+  const { bot } = useBot();
+  const { getChannel } = useChannel();
 
   useEffect(() => {
-    if (promotions) {
-      const last = promotions.sort((a, b) => b.time - a.time);
+    if (promotions && users && bot) {
+      const date = new Date();
+      const utc = `${date.getUTCDate()}-${
+        date.getUTCMonth() + 1
+      }-${date.getUTCFullYear()}`;
 
-      const promotionsData = last.slice(0, 10);
-
-      const data = promotionsData.map((promotion, index) => {
-        const object = {
-          id: index + 1,
-          photo: promotion.photo,
-          channel: promotion.channel,
-          cid: promotion.id,
-          wallet: promotion.wallet,
-        };
-        return object;
-      });
+      const utcPromotions = promotions.find(
+        (promotion) => promotion.day === utc
+      );
 
       const column = [
-        { name: "Channel", uid: "channel" },
+        { name: "Streamer", uid: "name" },
+        { name: "Language", uid: "language" },
         { name: "Donate", uid: "cid" },
       ];
 
-      setPromos({ column, data });
+      Promise.all(
+        utcPromotions.ids.map(async (id) => {
+          const access_token = bot[1].access_token;
+          let data = await getChannel(id, access_token);
+          return data;
+        })
+      ).then((promotion) => {
+        promotion.map((channel, index) => {
+          const user = users.find((user) => user.id === channel.broadcaster_id);
+          const data = [
+            {
+              id: index + 1,
+              cid: channel.broadcaster_id,
+              language: channel.broadcaster_language.toUpperCase(),
+              name: channel.broadcaster_name,
+              game: channel.game_name,
+              title: channel.title,
+              photo: user.photo,
+              wallet: user.wallet,
+            },
+          ];
+          setPromos({ column, data });
+        });
+      });
     }
-  }, [promotions]);
+  }, [promotions, users, bot]);
 
   return { promos };
 }

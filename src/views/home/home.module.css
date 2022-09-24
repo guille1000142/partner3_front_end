@@ -11,7 +11,7 @@
   color: #ffffff;
   width: 100%;
   max-width: 1150px;
-  background-color: #0c0f3a;
+  background-color: #060930;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   box-shadow: 0px 5px 20px 5px #00000011;
@@ -67,7 +67,7 @@
 
 .metamask {
   margin-right: 25px;
-  border: 0.5px solid #0c0f3a;
+  border: 0.5px solid #060930;
   align-items: center;
   justify-content: center;
   font-size: 18;
@@ -78,11 +78,11 @@
   border-radius: 20px;
   cursor: pointer;
   transition: all 1s ease;
-  box-shadow: 1px 1px 1rem #ff8d4c, -1px -1px 1rem #0c0f3a;
+  box-shadow: 1px 1px 1rem #ff8d4c, -1px -1px 1rem #060930;
 }
 
 .twitch {
-  border: 0.5px solid #0c0f3a;
+  border: 0.5px solid #060930;
   align-items: center;
   justify-content: center;
   font-size: 18;
@@ -93,7 +93,7 @@
   border-radius: 20px;
   cursor: pointer;
   transition: all 1s ease;
-  box-shadow: 1px 1px 1rem #c751fd, -1px -1px 1rem #0c0f3a;
+  box-shadow: 1px 1px 1rem #c751fd, -1px -1px 1rem #060930;
 }
 
 .orange {
@@ -106,20 +106,20 @@
 
 .orange:hover {
   background-color: #ff7322;
-  box-shadow: 1px 1px 1rem #0c0f3a, -1px -1px 1rem #ff7322;
+  box-shadow: 1px 1px 1rem #060930, -1px -1px 1rem #ff7322;
 }
 
 .purple:hover {
   background-color: #b923ff;
-  box-shadow: 1px 1px 1rem #0c0f3a, -1px -1px 1rem #b923ff;
+  box-shadow: 1px 1px 1rem #060930, -1px -1px 1rem #b923ff;
 }
 
 .orange:active {
-  box-shadow: inset 0.5px 0.5px 1rem #0c0f3a, -0.5px -0.5px 1rem #ff7322;
+  box-shadow: inset 0.5px 0.5px 1rem #060930, -0.5px -0.5px 1rem #ff7322;
 }
 
 .purple:active {
-  box-shadow: inset 0.5px 0.5px 1rem #0c0f3a, -0.5px -0.5px 1rem #b923ff;
+  box-shadow: inset 0.5px 0.5px 1rem #060930, -0.5px -0.5px 1rem #b923ff;
 }
 
 .promoted i {
@@ -128,37 +128,4 @@
 
 .promoted i:active {
   color: #7828c8;
-}
-
-.gold {
-  border: 3px double rgba(100, 100, 100, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: gold;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-}
-
-.silver {
-  border: 3px double rgba(100, 100, 100, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: silver;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-}
-
-.bronze {
-  border: 3px double rgba(100, 100, 100, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #cd7f32;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
 }

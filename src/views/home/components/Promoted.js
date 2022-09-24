@@ -1,4 +1,4 @@
-import { Button, Table, Col, Row, User } from "@nextui-org/react";
+import { Avatar, Table, Col, Row } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import styles from "../home.module.css";
 
@@ -9,19 +9,21 @@ export default function Promoted({ isDark, promos }) {
     const cellValue = user[columnKey];
 
     switch (columnKey) {
-      case "channel":
+      case "name":
         return (
           <Col>
             <Row>
-              {/* <div className={styles.promoted}> */}
-              <User
-                bordered
-                size="sm"
-                color="secondary"
-                src={user.photo}
-                name={user.channel}
-              />
-              {/* </div> */}
+              <Avatar bordered size="sm" color="secondary" src={user.photo} />
+              &nbsp;<span>{user.name}</span>
+            </Row>
+          </Col>
+        );
+
+      case "language":
+        return (
+          <Col>
+            <Row>
+              <span>{cellValue}</span>
             </Row>
           </Col>
         );

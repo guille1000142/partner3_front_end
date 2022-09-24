@@ -16,6 +16,7 @@ import useSearch from "../../hooks/useSearch";
 import { useMatchMedia } from "../../hooks/useMatchMedia";
 import usePromotions from "../../hooks/socket/usePromotions";
 import usePromos from "../../hooks/usePromos";
+import useUsers from "../../hooks/socket/useUsers";
 
 const ModalCards = ({ id, photo, name, title, wallet }) => {
   let navigate = useNavigate();
@@ -88,8 +89,9 @@ export default function Donations() {
   const reference = useRef();
   const { isDark } = useTheme();
   const { searchChannel, result } = useSearch();
+  const { users } = useUsers();
   const { promotions } = usePromotions();
-  const { promos } = usePromos({ promotions });
+  const { promos } = usePromos({ promotions, users });
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -176,7 +178,7 @@ export default function Donations() {
                   <ModalCards
                     id={data.cid}
                     photo={data.photo}
-                    name={data.channel}
+                    name={data.name}
                     wallet={data.wallet}
                   />
                 </div>
@@ -185,7 +187,7 @@ export default function Donations() {
           </div>
         ) : (
           <div className="loading">
-            <Loading size="lg" color="secondary" />
+            <Loading type="points" size="lg" color="secondary" />
           </div>
         )}
       </div>

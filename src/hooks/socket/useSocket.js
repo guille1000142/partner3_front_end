@@ -17,6 +17,10 @@ export default function useSocket() {
 
     const socketServer = io.connect(socketUrl, socketOptions);
     setSocket(socketServer);
+
+    return () => {
+      socketServer.disconnect();
+    };
   }, []);
 
   return { socket };
