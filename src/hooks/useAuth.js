@@ -14,7 +14,7 @@ export default function useAuth() {
   const error = queryParams.get("error");
 
   useEffect(() => {
-    if (code !== null) {
+    if (code !== null && users) {
       const httpUrl = process.env.REACT_APP_SOCKET_URL_HTTP;
       fetch(`${httpUrl}/api/v1/${code}`)
         .then((data) => {
@@ -46,9 +46,8 @@ export default function useAuth() {
                           "user",
                           JSON.stringify(user)
                         );
-                        saveUser(users, user);
+                        saveUser({ users, user, navigate });
                         setUser(user);
-                        navigate(-1);
                       });
                     })
                     .catch((err) => console.log(err));
@@ -65,10 +64,9 @@ export default function useAuth() {
     if (error !== null) {
       navigate(-1);
     }
-  }, [code, error]);
+  }, [code, error, users]);
 
   const restoreSession = () => {
-    console.log("restoring!");
     window.sessionStorage.clear();
     window.localStorage.clear();
     setUser(false);

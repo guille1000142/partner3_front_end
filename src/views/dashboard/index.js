@@ -118,7 +118,7 @@ export default function Dashboard() {
                     minWidth: "30px",
                     padding: "0 50px",
                   }}
-                  ghost={view}
+                  flat={view}
                   solid={!view}
                   onPress={() => setView(false)}
                 >
@@ -130,7 +130,7 @@ export default function Dashboard() {
                     minWidth: "30px",
                     padding: "0 50px",
                   }}
-                  ghost={!view}
+                  flat={!view}
                   solid={view}
                   onPress={() => setView(true)}
                 >

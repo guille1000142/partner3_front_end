@@ -6,7 +6,6 @@ import useGas from "./useGas";
 import useWeb3 from "./useWeb3";
 
 export default function useDonation() {
-  const user = JSON.parse(window.sessionStorage.getItem("user"));
   const { writeToChat } = useChat();
   const { saveDonation } = useSave();
   const { getPolygonGas } = useGas();
@@ -31,9 +30,10 @@ export default function useDonation() {
     setAmount,
     balance,
     profile,
+    user,
     setUser,
   }) => {
-    if (window.sessionStorage.getItem("user") === null) {
+    if (window.localStorage.getItem("user") === null) {
       toast.error("Login with twitch");
       setUser(false);
       return false;
@@ -46,10 +46,10 @@ export default function useDonation() {
       return false;
     }
 
-    const chainId = "0x13881";
+    const chainId = "0x89";
 
     if (network !== chainId) {
-      // changeNetwork({ chainId });
+      changeNetwork({ chainId });
     } else {
       if (balance < amount) {
         toast.error("Insufficient balance");
@@ -57,7 +57,7 @@ export default function useDonation() {
       }
 
       const truncateAmount = truncateDecimals(amount, 2);
-      // const gas = await getPolygonGas();
+      const gas = await getPolygonGas();
       const block = await web3.eth.getBlockNumber();
 
       var transaction = contract.methods
@@ -65,11 +65,10 @@ export default function useDonation() {
         .send({
           from: account,
           value: web3.utils.toWei(truncateAmount.toString(), "ether"),
-          // gasPrice: web3.utils.toWei(gas.toString(), "gwei"),
-          // gasLimit: 500000,
+          gasPrice: web3.utils.toWei(gas.fastest.toString(), "gwei"),
+          gasLimit: 500000,
         })
         .on("receipt", (receipt) => {
-          console.log("sended!");
           saveDonation({
             user,
             channel,

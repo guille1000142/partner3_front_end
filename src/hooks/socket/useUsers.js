@@ -16,6 +16,5 @@ export default function useUsers() {
       socket && socket.off("receive_users", listener);
     };
   }, [socket]);
-
   return { users };
 }

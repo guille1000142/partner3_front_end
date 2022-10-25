@@ -26,7 +26,6 @@ export function Profile({ user, modal, setModal }) {
           <Grid>
             <Avatar
               bordered
-              as="button"
               color="secondary"
               size="lg"
               css={{ width: "90px", height: "90px" }}

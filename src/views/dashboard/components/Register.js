@@ -1,12 +1,13 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Text, Button, Input, Card, Spacer } from "@nextui-org/react";
+import { Text, Button, Input, Card, Spacer, useTheme } from "@nextui-org/react";
 import useSave from "../../../hooks/useSave";
 import styles from "../dashboard.module.css";
 
 export default function Register({ user, setProfile }) {
   const [wallet, setWallet] = useState("");
   const { saveWallet } = useSave();
+  const { isDark } = useTheme();
 
   const handleWallet = (e) => {
     e.preventDefault();
@@ -25,7 +26,15 @@ export default function Register({ user, setProfile }) {
 
   return (
     <div className={styles.cards}>
-      <Card css={{ maxWidth: "340px", margin: "0 auto" }}>
+      <Card
+        css={{
+          maxWidth: "340px",
+          margin: "0 auto",
+          bg: isDark
+            ? "linear-gradient(300deg, rgba(190,190,190,1) 0%, rgba(235,235,235,1) 100%)"
+            : "#ffffff",
+        }}
+      >
         <Card.Body>
           <Text h3 css={{ textAlign: "center" }}>
             Set your wallet address to start receiving donations
@@ -35,22 +44,20 @@ export default function Register({ user, setProfile }) {
             size="lg"
             type="text"
             onChange={(e) => handleWallet(e)}
-            rounded
-            bordered
-            label="Matic Wallet Address (Polygon Network)"
-            placeholder="Introduce your wallet"
-            color="secondary"
+            spellCheck={false}
+            maxLength={50}
+            placeholder="Wallet address (Polygon Network)"
+            status="secondary"
             css={{ marginBottom: "10px" }}
           />
           <Spacer />
           <Button
             onPress={() => saveUserWallet()}
             size="md"
-            color="secondary"
+            color="success"
             css={{ fontSize: "20px" }}
-            shadow
           >
-            <i class="fa-solid fa-floppy-disk"></i> &nbsp; Save
+            <i className="fa-solid fa-floppy-disk"></i> &nbsp; Save
           </Button>
         </Card.Body>
       </Card>

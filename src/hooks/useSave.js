@@ -2,16 +2,18 @@ import { setDoc, doc, updateDoc, addDoc, collection } from "firebase/firestore";
 import { db } from "../firestore/client";
 
 export default function useSave() {
-  const saveUser = async (users, user) => {
-    const isSaved = users.find((user) => user.id === user.id);
+  const saveUser = async ({ users, user, navigate }) => {
+    const isSaved = users.find((profile) => profile.id === user.id);
     if (isSaved === undefined) {
       const data = {
         id: user.id,
+        photo: user.profile_image_url,
         email: user.email,
         createdAt: user.created_at,
       };
       await setDoc(doc(db, "users", user.id), data);
     }
+    window.location.replace(`${process.env.REACT_APP_URL}/#/dashboard`);
   };
 
   const saveWallet = async (wallet, user) => {

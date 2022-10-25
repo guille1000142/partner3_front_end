@@ -13,8 +13,17 @@ export default function Promoted({ isDark, promos }) {
         return (
           <Col>
             <Row>
-              <Avatar bordered size="sm" color="secondary" src={user.photo} />
-              &nbsp;<span>{user.name}</span>
+              {cellValue && (
+                <>
+                  <Avatar
+                    bordered
+                    size="sm"
+                    color="secondary"
+                    src={user.photo}
+                  />
+                  &nbsp;<span>{user.name}</span>
+                </>
+              )}
             </Row>
           </Col>
         );
@@ -22,9 +31,7 @@ export default function Promoted({ isDark, promos }) {
       case "language":
         return (
           <Col>
-            <Row>
-              <span>{cellValue}</span>
-            </Row>
+            <Row>{cellValue && <span>{cellValue}</span>}</Row>
           </Col>
         );
 
@@ -32,12 +39,14 @@ export default function Promoted({ isDark, promos }) {
         return (
           <Col>
             <Row>
-              <div className={styles.promoted}>
-                <i
-                  onClick={() => navigate(`/donations/${cellValue}`)}
-                  className="fa-solid fa-arrow-up-right-from-square"
-                ></i>
-              </div>
+              {cellValue && (
+                <div className={styles.promoted}>
+                  <i
+                    onClick={() => navigate(`/donations/${cellValue}`)}
+                    className="fa-solid fa-arrow-up-right-from-square"
+                  ></i>
+                </div>
+              )}
             </Row>
           </Col>
         );
@@ -68,12 +77,14 @@ export default function Promoted({ isDark, promos }) {
       <Table.Body items={promos.data}>
         {(item) => (
           <Table.Row
-            css={{
-              "&:hover": {
-                background: "$purple100",
-                color: "$purple800",
-              },
-            }}
+            css={
+              item.name && {
+                "&:hover": {
+                  background: "$purple100",
+                  color: "$purple800",
+                },
+              }
+            }
           >
             {(columnKey) => (
               <Table.Cell>{renderCell(item, columnKey)}</Table.Cell>

@@ -7,7 +7,7 @@ import {
   pMaticAddress,
   pUsdcAddress,
   pRouterAddress,
-  mPartnerAddress,
+  pPartnerAddress,
 } from "../utils/address";
 
 export default function useWeb3() {
@@ -43,7 +43,7 @@ export default function useWeb3() {
 
       const partnerContract = new metamaskWeb3.eth.Contract(
         ParnerAbi,
-        mPartnerAddress
+        pPartnerAddress
       );
       setContract(partnerContract);
 

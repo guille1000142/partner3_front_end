@@ -8,10 +8,15 @@ export default function useChannel() {
       },
     })
       .then((res) => {
-        return res.json().then((channel) => {
-          const data = channel.data[0];
-          return data;
-        });
+        return res
+          .json()
+          .then((channel) => {
+            const data = channel.data[0];
+            return data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);

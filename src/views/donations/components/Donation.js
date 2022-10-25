@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   Spacer,
+  Avatar,
   Tooltip,
   useTheme,
 } from "@nextui-org/react";
@@ -102,7 +103,14 @@ export default function Donation({
 
         <Card.Divider css={{ bg: isDark ? "#383838" : "silver" }} />
 
-        <Card.Body css={{ py: "$10" }}>
+        <Card.Body css={{ py: "$8" }}>
+          <Avatar
+            css={{ margin: "0 auto" }}
+            size="lg"
+            src={profile.photo}
+            color="secondary"
+            bordered
+          />
           <Text h3 css={{ textAlign: "center" }}>
             {channel.broadcaster_name}
           </Text>
@@ -231,6 +239,7 @@ export default function Donation({
                       balance,
                       channel,
                       profile,
+                      user,
                       setUser,
                     })
               }
@@ -241,12 +250,12 @@ export default function Donation({
             >
               {!account ? (
                 <>
-                  <i class="fa-solid fa-wallet"></i>&nbsp;
+                  <i className="fa-solid fa-wallet"></i>&nbsp;
                   <span className="bold">Connect Wallet</span>
                 </>
               ) : (
                 <>
-                  <i class="fa-solid fa-comments-dollar"></i>&nbsp;
+                  <i className="fa-solid fa-comments-dollar"></i>&nbsp;
                   <span className="bold">Send Message</span>
                 </>
               )}
@@ -264,6 +273,9 @@ export default function Donation({
               </div>
             </Button>
           )}
+          <Text css={{ textAlign: "center", marginTop: "5px" }} size={14}>
+            3% commissions
+          </Text>
         </Card.Body>
       </Card>
       <Spacer />

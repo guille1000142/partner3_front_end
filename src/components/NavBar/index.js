@@ -100,20 +100,31 @@ export default function NavBar() {
         isBordered
         variant="static"
       >
-        <Navbar.Brand>
-          <img src={Logo} alt="logo" width="40" height="40" />
-          &nbsp;
-          <Text
-            b
-            size={22}
-            css={{
-              color: isDark ? "#ffffff" : "#000000",
-              fontFamily: "Berlin Sans FB Demi, sans-serif",
-            }}
-          >
-            PARTNER3
-          </Text>
-        </Navbar.Brand>
+        <div
+          className="role-button"
+          onClick={() =>
+            window.open(
+              "https://partner3.live/",
+              "_blank" // <- This is what makes it open in a new window.
+            )
+          }
+        >
+          <Navbar.Brand>
+            <img src={Logo} alt="logo" width="40" height="40" />
+            &nbsp;
+            <Text
+              b
+              size={22}
+              css={{
+                color: isDark ? "#ffffff" : "#000000",
+                fontFamily: "Berlin Sans FB Demi, sans-serif",
+              }}
+            >
+              PARTNER3
+            </Text>
+          </Navbar.Brand>
+        </div>
+
         <Navbar.Content
           enableCursorHighlight
           activeColor="secondary"
@@ -133,6 +144,12 @@ export default function NavBar() {
             onPress={() => navigate("/donations")}
           >
             Donations
+          </Navbar.Link>
+          <Navbar.Link
+            css={{ color: isDark ? "#ffffff" : "#000000" }}
+            onPress={() => window.open("https://docs.partner3.live", "_blank")}
+          >
+            Docs
           </Navbar.Link>
         </Navbar.Content>
         <Navbar.Content>
@@ -155,7 +172,6 @@ export default function NavBar() {
               <Navbar.Item>
                 <Dropdown.Trigger>
                   <Avatar
-                    zoomed
                     bordered
                     as="button"
                     color="secondary"
@@ -212,6 +228,12 @@ export default function NavBar() {
           onClick={() => navigate("/donations")}
         >
           <i class="fa-solid fa-comments-dollar"></i> &nbsp;Donations
+        </span>
+        <span
+          className={location.pathname === "/docs" ? "purple" : ""}
+          onClick={() => window.open("https://docs.partner3.live", "_blank")}
+        >
+          <i class="fa-solid fa-book"></i> &nbsp;Docs
         </span>
       </div>
     </>

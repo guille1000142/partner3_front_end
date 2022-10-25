@@ -102,7 +102,7 @@ export default function Home() {
                 }}
                 h3
               >
-                <i class="fa-solid fa-fire"></i> &nbsp;Promoted Channels
+                <i className="fa-solid fa-fire"></i> &nbsp;Promoted Channels
               </Text>
               <Promoted promos={promos} isDark={isDark} />
             </Grid>
@@ -114,7 +114,7 @@ export default function Home() {
                 }}
                 h3
               >
-                <i class="fa-solid fa-globe"></i> &nbsp;Live Donations
+                <i className="fa-solid fa-globe"></i> &nbsp;Live Donations
               </Text>
               <Live live={live} isDark={isDark} />
             </Grid>
@@ -126,7 +126,7 @@ export default function Home() {
                 }}
                 h3
               >
-                <i class="fa-solid fa-trophy"></i> &nbsp;Top Donations
+                <i className="fa-solid fa-trophy"></i> &nbsp;Top Donations
               </Text>
               <TopDonation donation={tops.donation} isDark={isDark} />
             </Grid>
@@ -138,7 +138,7 @@ export default function Home() {
                 }}
                 h3
               >
-                <i class="fa-solid fa-trophy"></i> &nbsp;Top Amount
+                <i className="fa-solid fa-trophy"></i> &nbsp;Top Amount
               </Text>
               <TopAmount amount={tops.amount} isDark={isDark} />
             </Grid>

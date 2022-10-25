@@ -36,7 +36,6 @@ export default function useChat() {
     }
 
     function onConnectedHandler(addr, port) {
-      console.log("connected");
       client.say(
         `#${channel.broadcaster_name}`,
         `${donation} @${user.display_name} ${text}`

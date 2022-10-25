@@ -47,8 +47,6 @@ const ModalCards = ({ icon, color, value, text }) => {
 export default function Stats({ donations }) {
   const { isDark } = useTheme();
   const { tops } = useTops({ donations: donations.totalDonations });
-  console.log(tops);
-
   // const maxValue = 200;
   return (
     <div className={styles.cards}>
@@ -73,7 +71,7 @@ export default function Stats({ donations }) {
         />
       </Grid.Container>
 
-      {tops ? (
+      {tops && (
         <Grid.Container
           css={{ marginTop: "20px" }}
           gap={3}
@@ -87,7 +85,7 @@ export default function Stats({ donations }) {
               }}
               h3
             >
-              <i class="fa-solid fa-trophy"></i> &nbsp;Top Donations
+              <i className="fa-solid fa-trophy"></i> &nbsp;Top Donations
             </Text>
             <TopDonation donation={tops.donation} isDark={isDark} />
           </Grid>
@@ -99,15 +97,11 @@ export default function Stats({ donations }) {
               }}
               h3
             >
-              <i class="fa-solid fa-trophy"></i> &nbsp;Top Amount
+              <i className="fa-solid fa-trophy"></i> &nbsp;Top Amount
             </Text>
             <TopAmount amount={tops.amount} isDark={isDark} />
           </Grid>
         </Grid.Container>
-      ) : (
-        <div className="loading">
-          <Loading size="lg" color="secondary" />
-        </div>
       )}
       {/* <div className={styles.progress}>
           <Text h3>Donations</Text>

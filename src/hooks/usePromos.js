@@ -23,18 +23,19 @@ export default function usePromos({ promotions, users }) {
         { name: "Language", uid: "language" },
         { name: "Donate", uid: "cid" },
       ];
-
-      Promise.all(
-        utcPromotions.ids.map(async (id) => {
-          const access_token = bot[1].access_token;
-          let data = await getChannel(id, access_token);
-          return data;
-        })
-      ).then((promotion) => {
-        promotion.map((channel, index) => {
-          const user = users.find((user) => user.id === channel.broadcaster_id);
-          const data = [
-            {
+      if (utcPromotions !== undefined) {
+        Promise.all(
+          utcPromotions.ids.map(async (id) => {
+            const access_token = bot[1].access_token;
+            let data = await getChannel(id, access_token);
+            return data;
+          })
+        ).then((promotion) => {
+          const data = promotion.map((channel, index) => {
+            const user = users.find(
+              (user) => user.id === channel.broadcaster_id
+            );
+            const data = {
               id: index + 1,
               cid: channel.broadcaster_id,
               language: channel.broadcaster_language.toUpperCase(),
@@ -43,11 +44,15 @@ export default function usePromos({ promotions, users }) {
               title: channel.title,
               photo: user.photo,
               wallet: user.wallet,
-            },
-          ];
+            };
+
+            return data;
+          });
           setPromos({ column, data });
         });
-      });
+      } else {
+        setPromos({ column, data: [{ id: 1 }] });
+      }
     }
   }, [promotions, users, bot]);
 
