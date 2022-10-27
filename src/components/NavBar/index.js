@@ -14,14 +14,11 @@ import { useMatchMedia } from "../../hooks/useMatchMedia";
 import useThemeApp from "../../hooks/useThemeApp";
 import { Profile } from "./components/Profile";
 import Logo from "../../assets/imgs/logo.png";
-// import DiscordLogo from "../../assets/imgs/discordIcon.png";
-// import TwitterLogo from "../../assets/imgs/twitterIcon.png";
 import { icons } from "../Svgs/Icons";
 
 export default function NavBar() {
   const isMobileResolution = useMatchMedia("(max-width:960px)", false);
   const [profile, setProfile] = useState(false);
-  const [settings, setSettings] = useState(false);
   const [mobile, setMobile] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,9 +33,6 @@ export default function NavBar() {
     }
     if (action === "profile") {
       setProfile(true);
-    }
-    if (action === "settings") {
-      setSettings(true);
     }
     if (action === "logout") {
       window.sessionStorage.clear();
@@ -83,6 +77,44 @@ export default function NavBar() {
     }
   }, [isDark, mobile, isMobileResolution]);
 
+  const handleDropdown = (e) => {
+    switch (e) {
+      case "documentation":
+        window.open("https://docs.partner3.live", "_blank");
+        break;
+      case "messages":
+        window.open(
+          "https://docs.partner3.live/s/getting-started/for-viewers",
+          "_blank"
+        );
+        break;
+      case "donations":
+        window.open(
+          "https://docs.partner3.live/s/getting-started/for-streamers",
+          "_blank"
+        );
+        break;
+      case "roadmap":
+        window.open(
+          "https://docs.partner3.live/s/partner3-team/roadmap",
+          "_blank"
+        );
+        break;
+      case "tokenomics":
+        window.open(
+          "https://docs.partner3.live/s/partner3-team/tokenomics",
+          "_blank"
+        );
+        break;
+      case "discord":
+        window.open("https://discord.com/invite/suNRNRhbDe", "_blank");
+        break;
+      case "twitter":
+        window.open("https://twitter.com/PartnerThree", "_blank");
+        break;
+    }
+  };
+
   return (
     <>
       {user && <Profile user={user} modal={profile} setModal={setProfile} />}
@@ -108,11 +140,6 @@ export default function NavBar() {
           </Navbar.Brand>
         </div>
 
-        {/* <div className="social-icons">
-          <img width="26" height="26" src={DiscordLogo} alt="discord" />
-          <img width="26" height="26" src={TwitterLogo} alt="twitter" />
-        </div> */}
-
         <Navbar.Content
           activeColor="secondary"
           hideIn="sm"
@@ -132,7 +159,7 @@ export default function NavBar() {
           >
             Donations
           </Navbar.Link>
-          <Dropdown isBordered>
+          <Dropdown>
             <Navbar.Item>
               <Dropdown.Button
                 auto
@@ -149,7 +176,10 @@ export default function NavBar() {
               </Dropdown.Button>
             </Navbar.Item>
             <Dropdown.Menu
-              aria-label="ACME features"
+              color="secondary"
+              variant="flat"
+              onAction={handleDropdown}
+              aria-label="resources"
               css={{
                 $$dropdownMenuWidth: "340px",
                 $$dropdownItemHeight: "70px",
@@ -171,33 +201,17 @@ export default function NavBar() {
               <Dropdown.Item
                 css={{ color: isDark ? "#ffffff" : "#000000" }}
                 key="documentation"
-                showFullDescription
                 icon={<i class="fa-solid fa-book"></i>}
               >
-                <div
-                  onClick={() =>
-                    window.open("https://docs.partner3.live", "_blank")
-                  }
-                >
-                  Documentation
-                </div>
+                Documentation
               </Dropdown.Item>
+
               <Dropdown.Item
                 css={{ color: isDark ? "#ffffff" : "#000000" }}
                 key="messages"
-                showFullDescription
                 icon={<i class="fa-solid fa-paper-plane"></i>}
               >
-                <div
-                  onClick={() =>
-                    window.open(
-                      "https://docs.partner3.live/s/getting-started/for-viewers",
-                      "_blank"
-                    )
-                  }
-                >
-                  How to send messages
-                </div>
+                How to send messages
               </Dropdown.Item>
               <Dropdown.Item
                 css={{ color: isDark ? "#ffffff" : "#000000" }}
@@ -205,16 +219,7 @@ export default function NavBar() {
                 showFullDescription
                 icon={<i class="fa-solid fa-hand-holding-dollar"></i>}
               >
-                <div
-                  onClick={() =>
-                    window.open(
-                      "https://docs.partner3.live/s/getting-started/for-streamers",
-                      "_blank"
-                    )
-                  }
-                >
-                  How to receive donations
-                </div>
+                How to receive donations
               </Dropdown.Item>
               <Dropdown.Item
                 css={{ color: isDark ? "#ffffff" : "#000000" }}
@@ -222,16 +227,7 @@ export default function NavBar() {
                 showFullDescription
                 icon={<i class="fa-solid fa-road"></i>}
               >
-                <div
-                  onClick={() =>
-                    window.open(
-                      "https://docs.partner3.live/s/partner3-team/roadmap",
-                      "_blank"
-                    )
-                  }
-                >
-                  Roadmap
-                </div>
+                Roadmap
               </Dropdown.Item>
               <Dropdown.Item
                 css={{ color: isDark ? "#ffffff" : "#000000" }}
@@ -239,24 +235,16 @@ export default function NavBar() {
                 showFullDescription
                 icon={<i class="fa-solid fa-chart-pie"></i>}
               >
-                <div
-                  onClick={() =>
-                    window.open(
-                      "https://docs.partner3.live/s/partner3-team/tokenomics",
-                      "_blank"
-                    )
-                  }
-                >
-                  PTT Tokenomics
-                </div>
+                PTT Tokenomics
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown isBordered>
+          <Dropdown>
             <Navbar.Item>
               <Dropdown.Button
                 auto
                 light
+                color="secondary"
                 css={{
                   px: 0,
                   dflex: "center",
@@ -269,7 +257,10 @@ export default function NavBar() {
               </Dropdown.Button>
             </Navbar.Item>
             <Dropdown.Menu
-              aria-label="ACME features"
+              color="secondary"
+              variant="flat"
+              onAction={handleDropdown}
+              aria-label="community"
               css={{
                 $$dropdownMenuWidth: "340px",
                 $$dropdownItemHeight: "70px",
@@ -290,36 +281,21 @@ export default function NavBar() {
             >
               <Dropdown.Item
                 css={{ color: isDark ? "#ffffff" : "#000000" }}
-                key="autoscaling"
+                key="discord"
                 showFullDescription
                 description="Be part of our big community and participate in live events"
                 icon={icons.discord}
               >
-                <div
-                  onClick={() =>
-                    window.open(
-                      "https://discord.com/invite/suNRNRhbDe",
-                      "_blank"
-                    )
-                  }
-                >
-                  Join us on Discord
-                </div>
+                Join us on Discord
               </Dropdown.Item>
               <Dropdown.Item
                 css={{ color: isDark ? "#ffffff" : "#000000" }}
-                key="usage_metrics"
+                key="twitter"
                 showFullDescription
                 description="We publish news and important updates about the project"
                 icon={icons.twitter}
               >
-                <div
-                  onClick={() =>
-                    window.open("https://twitter.com/PartnerThree", "_blank")
-                  }
-                >
-                  Follow us on Twitter
-                </div>
+                Follow us on Twitter
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
@@ -387,6 +363,7 @@ export default function NavBar() {
           )}
         </Navbar.Content>
       </Navbar>
+
       {isMobileResolution && (
         <>
           <div
