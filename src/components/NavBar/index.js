@@ -14,9 +14,12 @@ import { useMatchMedia } from "../../hooks/useMatchMedia";
 import useThemeApp from "../../hooks/useThemeApp";
 import { Profile } from "./components/Profile";
 import Logo from "../../assets/imgs/logo.png";
+// import DiscordLogo from "../../assets/imgs/discordIcon.png";
+// import TwitterLogo from "../../assets/imgs/twitterIcon.png";
+import { icons } from "../Svgs/Icons";
 
 export default function NavBar() {
-  const isMobileResolution = useMatchMedia("(max-width:650px)", false);
+  const isMobileResolution = useMatchMedia("(max-width:960px)", false);
   const [profile, setProfile] = useState(false);
   const [settings, setSettings] = useState(false);
   const [mobile, setMobile] = useState(false);
@@ -83,31 +86,11 @@ export default function NavBar() {
   return (
     <>
       {user && <Profile user={user} modal={profile} setModal={setProfile} />}
-      {isMobileResolution && (
-        <div
-          role="button"
-          onClick={() => setMobile(!mobile)}
-          className="btn-flotante menu-btn"
-        >
-          <div class="menu-btn__burger"></div>
-        </div>
-      )}
 
-      <Navbar
-        maxWidth="xl"
-        isCompact
-        shouldHideOnScroll
-        isBordered
-        variant="static"
-      >
+      <Navbar maxWidth="xl" isCompact shouldHideOnScroll variant="static">
         <div
           className="role-button"
-          onClick={() =>
-            window.open(
-              "https://partner3.live/",
-              "_blank" // <- This is what makes it open in a new window.
-            )
-          }
+          onClick={() => window.open("https://partner3.live/", "_blank")}
         >
           <Navbar.Brand>
             <img src={Logo} alt="logo" width="40" height="40" />
@@ -125,10 +108,14 @@ export default function NavBar() {
           </Navbar.Brand>
         </div>
 
+        {/* <div className="social-icons">
+          <img width="26" height="26" src={DiscordLogo} alt="discord" />
+          <img width="26" height="26" src={TwitterLogo} alt="twitter" />
+        </div> */}
+
         <Navbar.Content
-          enableCursorHighlight
           activeColor="secondary"
-          hideIn="xs"
+          hideIn="sm"
           variant="underline-rounded"
         >
           <Navbar.Link
@@ -145,20 +132,205 @@ export default function NavBar() {
           >
             Donations
           </Navbar.Link>
-          <Navbar.Link
-            css={{ color: isDark ? "#ffffff" : "#000000" }}
-            onPress={() => window.open("https://docs.partner3.live", "_blank")}
-          >
-            Docs
-          </Navbar.Link>
+          <Dropdown isBordered>
+            <Navbar.Item>
+              <Dropdown.Button
+                auto
+                light
+                css={{
+                  px: 0,
+                  dflex: "center",
+                  svg: { pe: "none" },
+                  color: isDark ? "#ffffff" : "#000000",
+                }}
+                ripple={false}
+              >
+                Resources
+              </Dropdown.Button>
+            </Navbar.Item>
+            <Dropdown.Menu
+              aria-label="ACME features"
+              css={{
+                $$dropdownMenuWidth: "340px",
+                $$dropdownItemHeight: "70px",
+                "& .nextui-dropdown-item": {
+                  py: "$4",
+                  // dropdown item left icon
+                  svg: {
+                    color: "$secondary",
+                    mr: "$4",
+                  },
+                  // dropdown item title
+                  "& .nextui-dropdown-item-content": {
+                    w: "100%",
+                    fontWeight: "$semibold",
+                  },
+                },
+              }}
+            >
+              <Dropdown.Item
+                css={{ color: isDark ? "#ffffff" : "#000000" }}
+                key="documentation"
+                showFullDescription
+                icon={<i class="fa-solid fa-book"></i>}
+              >
+                <div
+                  onClick={() =>
+                    window.open("https://docs.partner3.live", "_blank")
+                  }
+                >
+                  Documentation
+                </div>
+              </Dropdown.Item>
+              <Dropdown.Item
+                css={{ color: isDark ? "#ffffff" : "#000000" }}
+                key="messages"
+                showFullDescription
+                icon={<i class="fa-solid fa-paper-plane"></i>}
+              >
+                <div
+                  onClick={() =>
+                    window.open(
+                      "https://docs.partner3.live/s/getting-started/for-viewers",
+                      "_blank"
+                    )
+                  }
+                >
+                  How to send messages
+                </div>
+              </Dropdown.Item>
+              <Dropdown.Item
+                css={{ color: isDark ? "#ffffff" : "#000000" }}
+                key="donations"
+                showFullDescription
+                icon={<i class="fa-solid fa-hand-holding-dollar"></i>}
+              >
+                <div
+                  onClick={() =>
+                    window.open(
+                      "https://docs.partner3.live/s/getting-started/for-streamers",
+                      "_blank"
+                    )
+                  }
+                >
+                  How to receive donations
+                </div>
+              </Dropdown.Item>
+              <Dropdown.Item
+                css={{ color: isDark ? "#ffffff" : "#000000" }}
+                key="roadmap"
+                showFullDescription
+                icon={<i class="fa-solid fa-road"></i>}
+              >
+                <div
+                  onClick={() =>
+                    window.open(
+                      "https://docs.partner3.live/s/partner3-team/roadmap",
+                      "_blank"
+                    )
+                  }
+                >
+                  Roadmap
+                </div>
+              </Dropdown.Item>
+              <Dropdown.Item
+                css={{ color: isDark ? "#ffffff" : "#000000" }}
+                key="tokenomics"
+                showFullDescription
+                icon={<i class="fa-solid fa-chart-pie"></i>}
+              >
+                <div
+                  onClick={() =>
+                    window.open(
+                      "https://docs.partner3.live/s/partner3-team/tokenomics",
+                      "_blank"
+                    )
+                  }
+                >
+                  PTT Tokenomics
+                </div>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown isBordered>
+            <Navbar.Item>
+              <Dropdown.Button
+                auto
+                light
+                css={{
+                  px: 0,
+                  dflex: "center",
+                  svg: { pe: "none" },
+                  color: isDark ? "#ffffff" : "#000000",
+                }}
+                ripple={false}
+              >
+                Community
+              </Dropdown.Button>
+            </Navbar.Item>
+            <Dropdown.Menu
+              aria-label="ACME features"
+              css={{
+                $$dropdownMenuWidth: "340px",
+                $$dropdownItemHeight: "70px",
+                "& .nextui-dropdown-item": {
+                  py: "$4",
+                  // dropdown item left icon
+                  svg: {
+                    color: "$secondary",
+                    mr: "$4",
+                  },
+                  // dropdown item title
+                  "& .nextui-dropdown-item-content": {
+                    w: "100%",
+                    fontWeight: "$semibold",
+                  },
+                },
+              }}
+            >
+              <Dropdown.Item
+                css={{ color: isDark ? "#ffffff" : "#000000" }}
+                key="autoscaling"
+                showFullDescription
+                description="Be part of our big community and participate in live events"
+                icon={icons.discord}
+              >
+                <div
+                  onClick={() =>
+                    window.open(
+                      "https://discord.com/invite/suNRNRhbDe",
+                      "_blank"
+                    )
+                  }
+                >
+                  Join us on Discord
+                </div>
+              </Dropdown.Item>
+              <Dropdown.Item
+                css={{ color: isDark ? "#ffffff" : "#000000" }}
+                key="usage_metrics"
+                showFullDescription
+                description="We publish news and important updates about the project"
+                icon={icons.twitter}
+              >
+                <div
+                  onClick={() =>
+                    window.open("https://twitter.com/PartnerThree", "_blank")
+                  }
+                >
+                  Follow us on Twitter
+                </div>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Navbar.Content>
+
         <Navbar.Content>
           <i
             onClick={() => setTheme(isDark ? "light" : "dark")}
             className={`icon ${
               isDark ? "fa-solid fa-sun light" : "fa-solid fa-moon dark"
             }`}
-            // className={`icon ${"fa-solid fa-moon dark"}`}
           ></i>
           {!user ? (
             <Button solid onPress={handleLogin} color="secondary" size="sm">
@@ -215,27 +387,94 @@ export default function NavBar() {
           )}
         </Navbar.Content>
       </Navbar>
-      <div className="mobile-menu" onClick={() => setMobile(!mobile)}>
-        <h2>PARTNER3</h2>
-        <span
-          className={location.pathname === "/" ? "purple" : ""}
-          onClick={() => navigate("/")}
-        >
-          <i class="fa-solid fa-house-chimney"></i> &nbsp;Home
-        </span>
-        <span
-          className={location.pathname === "/donations" ? "purple" : ""}
-          onClick={() => navigate("/donations")}
-        >
-          <i class="fa-solid fa-comments-dollar"></i> &nbsp;Donations
-        </span>
-        <span
-          className={location.pathname === "/docs" ? "purple" : ""}
-          onClick={() => window.open("https://docs.partner3.live", "_blank")}
-        >
-          <i class="fa-solid fa-book"></i> &nbsp;Docs
-        </span>
-      </div>
+      {isMobileResolution && (
+        <>
+          <div
+            role="button"
+            onClick={() => setMobile(!mobile)}
+            className="btn-flotante menu-btn"
+          >
+            <div class="menu-btn__burger"></div>
+          </div>
+          <div className="mobile-menu" onClick={() => setMobile(!mobile)}>
+            <h2>PARTNER3</h2>
+            <span
+              className={location.pathname === "/" ? "purple" : ""}
+              onClick={() => navigate("/")}
+            >
+              <i class="fa-solid fa-house-chimney"></i> &nbsp;Home
+            </span>
+            <span
+              className={location.pathname === "/donations" ? "purple" : ""}
+              onClick={() => navigate("/donations")}
+            >
+              <i class="fa-solid fa-comments-dollar"></i> &nbsp;Donations
+            </span>
+            <span
+              onClick={() =>
+                window.open("https://docs.partner3.live", "_blank")
+              }
+            >
+              <i class="fa-solid fa-book"></i> &nbsp;Documentation
+            </span>
+            <span
+              onClick={() =>
+                window.open(
+                  "https://docs.partner3.live/s/getting-started/for-viewers",
+                  "_blank"
+                )
+              }
+            >
+              <i class="fa-solid fa-paper-plane"></i> &nbsp;How to send messages
+            </span>
+            <span
+              onClick={() =>
+                window.open(
+                  "https://docs.partner3.live/s/getting-started/for-streamers",
+                  "_blank"
+                )
+              }
+            >
+              <i class="fa-solid fa-hand-holding-dollar"></i> &nbsp;How to
+              receive donations
+            </span>
+            <span
+              onClick={() =>
+                window.open(
+                  "https://docs.partner3.live/s/partner3-team/roadmap",
+                  "_blank"
+                )
+              }
+            >
+              <i class="fa-solid fa-road"></i> &nbsp;Roadmap
+            </span>
+            <span
+              onClick={() =>
+                window.open(
+                  "https://docs.partner3.live/s/partner3-team/tokenomics",
+                  "_blank"
+                )
+              }
+            >
+              <i class="fa-solid fa-chart-pie"></i> &nbsp;PTT Tokenomics
+            </span>
+            <span
+              onClick={() =>
+                window.open("https://discord.com/invite/suNRNRhbDe", "_blank")
+              }
+            >
+              <i class="fa-brands fa-discord"></i> &nbsp;Discord
+            </span>
+            <span
+              onClick={() =>
+                window.open("https://twitter.com/PartnerThree", "_blank")
+              }
+            >
+              <i class="fa-brands fa-twitter"></i> &nbsp;Twitter
+            </span>
+          </div>
+        </>
+      )}
     </>
   );
 }

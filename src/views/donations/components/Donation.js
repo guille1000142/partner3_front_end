@@ -104,13 +104,16 @@ export default function Donation({
         <Card.Divider css={{ bg: isDark ? "#383838" : "silver" }} />
 
         <Card.Body css={{ py: "$8" }}>
-          <Avatar
-            css={{ margin: "0 auto" }}
-            size="lg"
-            src={profile.photo}
-            color="secondary"
-            bordered
-          />
+          {profile && (
+            <Avatar
+              css={{ margin: "0 auto" }}
+              size="lg"
+              src={profile.photo}
+              color="secondary"
+              bordered
+            />
+          )}
+
           <Text h3 css={{ textAlign: "center" }}>
             {channel.broadcaster_name}
           </Text>
